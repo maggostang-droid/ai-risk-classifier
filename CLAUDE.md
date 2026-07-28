@@ -69,12 +69,22 @@ gefixt (siehe `.superpowers/sdd/2026-07-28-ai-act-validation-toolkit-implementat
 - ✅ GitHub-Repo angelegt und gepusht:
   https://github.com/maggostang-droid/ai-act-validation-toolkit (public,
   Branch `master`).
+- ✅ GitHub-Pages-Projektseite live:
+  https://maggostang-droid.github.io/ai-act-validation-toolkit/
+- ✅ Task 10 abgeschlossen: Streamlit-Community-Cloud-Deployment live unter
+  https://ai-act-validation-toolkit.streamlit.app/ (Marco hat Secrets
+  selbst gesetzt, App von ihm als erreichbar bestätigt — damit auch der
+  erste echte Testlauf mit echtem LLM-API-Key erfolgt).
 
-Noch offen (kein Implementierungs-Task, sondern Deployment-Schritte):
+Alle 10 Plan-Tasks sind damit abgeschlossen. Projekt ist "fertig" im
+Sinne des Backlogs (`../PORTFOLIO_BACKLOG.md`, Status entsprechend
+aktualisieren, falls noch nicht geschehen).
 
-- ⬜ Manuelle Browser-Verifikation der App (bisher nur automatisiert via
-  `streamlit.testing.v1.AppTest` geprüft).
-- ⬜ Testlauf mit echtem LLM-API-Key (bisher nur mit Mocks getestet).
-- ⬜ Streamlit-Cloud-Deployment noch nicht eingerichtet (braucht Marcos
-  Login auf share.streamlit.io + echten API-Key als Secret — siehe
-  Implementierungsplan, Task 10).
+Noch offen (kein Implementierungs-Task):
+
+- ⬜ Manuelle Browser-Verifikation der App durch eine Agenten-Session war
+  nie möglich (kein Browser-Zugriff) — bisher nur automatisiert via
+  `streamlit.testing.v1.AppTest` geprüft. Marco hat die Live-App laut
+  eigener Aussage erreichbar bestätigt, ein detailliertes Durchklicken
+  aller 3 Use-Cases in der Live-Version steht seitens einer Agenten-Session
+  weiterhin aus.

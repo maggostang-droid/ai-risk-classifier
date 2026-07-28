@@ -22,7 +22,10 @@ Fahrzeug-Komfortsystemen.
 
 ## Live-Demo
 
-[Link folgt nach Streamlit-Community-Cloud-Deployment]
+👉 **[ai-act-validation-toolkit.streamlit.app](https://ai-act-validation-toolkit.streamlit.app/)**
+
+(Streamlit Community Cloud — Free-Tier-Apps schlafen nach Inaktivität ein,
+der erste Aufruf kann ein paar Sekunden zum Aufwachen brauchen.)
 
 ## Was das Tool macht
 

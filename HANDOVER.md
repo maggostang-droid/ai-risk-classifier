@@ -6,16 +6,19 @@ Projekt weiterarbeitet, ohne den bisherigen Chatverlauf zu kennen. Stand:
 
 ## TL;DR
 
-Das Projekt ist **funktional fertig implementiert, getestet, reviewed und
-auf GitHub veröffentlicht.** Nur der letzte Schritt (Live-Deployment über
-Streamlit Community Cloud) fehlt noch, weil er Marcos persönlichen Login
-und einen echten LLM-API-Key erfordert — das kann eine Agenten-Session
-nicht eigenständig erledigen.
+**Projekt ist komplett fertig** — implementiert, getestet, reviewed, auf
+GitHub veröffentlicht und live deployed. Alle 10 Plan-Tasks abgeschlossen.
 
 - Repo: https://github.com/maggostang-droid/ai-act-validation-toolkit (public, Branch `master`)
 - Projektseite (GitHub Pages): https://maggostang-droid.github.io/ai-act-validation-toolkit/
-- Live-Demo (Streamlit): **noch nicht deployed** — siehe "Nächster Schritt" unten
+- Live-Demo (Streamlit): https://ai-act-validation-toolkit.streamlit.app/ (von Marco deployed + als erreichbar bestätigt)
 - Tests: `pytest tests/ -v` → 17/17 grün, kein Netzwerk/LLM nötig
+
+**Falls du hier landest, weil das nächste Backlog-Item ansteht:** dieses
+Projekt braucht keine weitere Arbeit mehr. Nächster Schritt ist, in
+`../PORTFOLIO_BACKLOG.md` das nächsthöchste `offen`-Item aufzugreifen
+(`cloud-native-pipeline`, Stand 2026-07-28) — siehe
+`../PORTFOLIO_AGENT_GUIDE.md` für den Ablauf.
 
 ## Wie dieses Projekt entstanden ist
 
@@ -82,28 +85,23 @@ monoton ist — nur der pytest `test_broken_sut_fails_relation` beweist, dass
 der Runner Verletzungen erkennt). Wäre ein guter "Beweis"-Moment für
 Recruiter, ist aber reine UI-Erweiterung, kein Bugfix.
 
-## Nächster Schritt: Task 10 (Streamlit Community Cloud Deployment)
+## Task 10 (Streamlit Community Cloud Deployment) — erledigt
 
-**Das kann nur Marco selbst tun** (Login + persönlicher API-Key):
+Marco hat selbst deployed (Login + eigener API-Key als Secret gesetzt) und
+die App als erreichbar bestätigt: https://ai-act-validation-toolkit.streamlit.app/
 
-1. Auf https://share.streamlit.io mit seinem GitHub-Account einloggen.
-2. Neue App aus `maggostang-droid/ai-act-validation-toolkit`, Branch
-   `master`, Datei `app.py` deployen.
-3. In den App-Secrets eintragen: `LLM_PROVIDER`, `LLM_MODEL`,
-   `ANTHROPIC_API_KEY` (siehe `.env.example` für das Format).
-4. Kurz durchklicken: alle 3 Use-Cases, Begründung generieren, metamorphen
-   Test ausführen, Governance-Artefakt herunterladen.
+Danach erledigt:
+- ✅ Live-URL in README.md unter "Live-Demo" eingetragen.
+- ✅ Live-Demo-Button auf der Projektseite (`docs/index.html`) aktiviert.
+- ✅ CLAUDE.md "Aktueller Stand" aktualisiert.
+- ✅ `../PORTFOLIO_BACKLOG.md`: Status von Item #0 auf `fertig` gesetzt.
+- ✅ Projekt-Karte in `../stangfolio/data/projects.js` ergänzt.
 
-**Danach, für eine Agenten-Session:**
-
-1. Live-URL im README.md unter "Live-Demo" eintragen (aktuell Platzhalter).
-2. `../PORTFOLIO_BACKLOG.md`: Status von Item #0 auf `fertig` setzen.
-3. Falls gewünscht: neue Projekt-Karte in `../stangfolio/data/projects.js`
-   ergänzen (Schema dort bereits definiert: `{ id, title, summary,
-   description, tags, demoUrl, repoUrl, status, coldStartNote? }`).
-4. Kurze Rücksprache mit Marco, ob alles passt, bevor die nächste
-   Backlog-Session das nächste Item (`cloud-native-pipeline`, aktuell
-   nächsthöchste Priorität) aufgreift.
+**Einziger optionaler Rest, kein Blocker:** ein detailliertes Durchklicken
+aller 3 Use-Cases in der Live-App (alle Buttons, Governance-Download) durch
+eine Agenten-Session war nie möglich (kein Browser-Zugriff) — nur Marcos
+eigene Bestätigung "erreichbar" liegt vor. Falls das nachgeholt werden soll,
+bräuchte es entweder Marco selbst oder eine Session mit Browser-Tooling.
 
 ## Wo was liegt
 
