@@ -3,6 +3,10 @@
 Portfolio-Projekt von Marco Stang für Bewerbungen auf AI/KI-Rollen (ggf.
 auch KI-Transformations-Rollen).
 
+🔗 **[Projektseite](https://maggostang-droid.github.io/ai-act-validation-toolkit/)**
+— Überblick, Architektur, Motivation (kein Ersatz für die Live-Demo, siehe
+unten).
+
 ## In 30 Sekunden
 
 Dieses Tool sagt dir, ob dein KI-System nach dem EU AI Act als "Hochrisiko"

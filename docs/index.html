@@ -1,0 +1,389 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI Act Validation Toolkit — Marco Stang</title>
+<meta name="description" content="EU-AI-Act-Risikoklassifizierung + metamorphe Validierung — eine anwendbare Miniatur von Marco Stangs Promotionsthema.">
+<style>
+  :root {
+    --bg: #f7f7f5;
+    --bg-alt: #ffffff;
+    --text: #1c1c1a;
+    --text-muted: #58584f;
+    --border: #e2e0d8;
+    --accent: #a3402a;
+    --accent-soft: #f3e2dc;
+    --accent-2: #2f5d50;
+    --accent-2-soft: #e1ece7;
+    --code-bg: #efede4;
+    --shadow: 0 1px 2px rgba(28,28,26,0.06), 0 8px 24px rgba(28,28,26,0.05);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #17181a;
+      --bg-alt: #1f2123;
+      --text: #ece9e2;
+      --text-muted: #a6a396;
+      --border: #33352f;
+      --accent: #e08a6f;
+      --accent-soft: #3a2620;
+      --accent-2: #7fb8a4;
+      --accent-2-soft: #1e2e28;
+      --code-bg: #26282a;
+      --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 8px 24px rgba(0,0,0,0.35);
+    }
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    line-height: 1.55;
+  }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  .wrap { max-width: 880px; margin: 0 auto; padding: 0 24px; }
+
+  header.hero {
+    padding: 72px 0 56px;
+    border-bottom: 1px solid var(--border);
+  }
+  .eyebrow {
+    display: inline-block;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--accent);
+    background: var(--accent-soft);
+    padding: 5px 12px;
+    border-radius: 999px;
+    margin-bottom: 20px;
+  }
+  h1 {
+    font-size: clamp(1.9rem, 4vw, 2.6rem);
+    line-height: 1.15;
+    margin: 0 0 18px;
+    letter-spacing: -0.01em;
+  }
+  .lede {
+    font-size: 1.1rem;
+    color: var(--text-muted);
+    max-width: 62ch;
+    margin: 0 0 28px;
+  }
+  .cta-row { display: flex; gap: 12px; flex-wrap: wrap; }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 11px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    border: 1px solid transparent;
+  }
+  .btn:hover { text-decoration: none; }
+  .btn-primary { background: var(--accent); color: #fff8f5; }
+  .btn-primary:hover { filter: brightness(1.08); }
+  .btn-outline {
+    background: transparent;
+    border-color: var(--border);
+    color: var(--text);
+  }
+  .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+  .btn-disabled {
+    background: transparent;
+    border-color: var(--border);
+    color: var(--text-muted);
+    cursor: default;
+    opacity: 0.7;
+  }
+  .btn-disabled:hover { text-decoration: none; }
+
+  section { padding: 52px 0; border-bottom: 1px solid var(--border); }
+  section:last-of-type { border-bottom: none; }
+  h2 {
+    font-size: 1.5rem;
+    margin: 0 0 8px;
+    letter-spacing: -0.01em;
+  }
+  .section-intro {
+    color: var(--text-muted);
+    max-width: 68ch;
+    margin: 0 0 32px;
+  }
+
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+  }
+  .card {
+    background: var(--bg-alt);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: var(--shadow);
+  }
+  .card .num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 999px;
+    background: var(--accent-2-soft);
+    color: var(--accent-2);
+    font-weight: 700;
+    font-size: 0.85rem;
+    margin-bottom: 12px;
+  }
+  .card h3 { font-size: 1.02rem; margin: 0 0 8px; }
+  .card p { font-size: 0.92rem; color: var(--text-muted); margin: 0; }
+
+  .why-grid {
+    display: grid;
+    grid-template-columns: 1.3fr 1fr;
+    gap: 24px;
+  }
+  @media (max-width: 640px) { .why-grid { grid-template-columns: 1fr; } }
+  .stat-card {
+    background: var(--bg-alt);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: var(--shadow);
+    align-self: start;
+  }
+  .stat-card .label {
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+  }
+  .stat-card .value {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--accent);
+    margin-bottom: 4px;
+  }
+  .stat-card + .stat-card { margin-top: 14px; }
+
+  .pipeline {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: stretch;
+    gap: 0;
+  }
+  .pipe-node {
+    background: var(--bg-alt);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 16px;
+    font-size: 0.86rem;
+    box-shadow: var(--shadow);
+    flex: 1 1 150px;
+    min-width: 140px;
+  }
+  .pipe-node.optional { border-style: dashed; color: var(--text-muted); }
+  .pipe-node strong { display: block; font-size: 0.9rem; margin-bottom: 3px; color: var(--text); }
+  .pipe-arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 8px;
+    color: var(--text-muted);
+    font-size: 1.1rem;
+    flex: 0 0 auto;
+  }
+
+  .file-list {
+    font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+    font-size: 0.85rem;
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px 20px;
+    overflow-x: auto;
+  }
+  .file-list .path { color: var(--accent-2); }
+  .file-list .desc { color: var(--text-muted); }
+  .file-list div { white-space: pre; }
+
+  .badges { display: flex; flex-wrap: wrap; gap: 8px; }
+  .badge {
+    font-size: 0.8rem;
+    font-weight: 600;
+    padding: 6px 12px;
+    border-radius: 999px;
+    background: var(--accent-2-soft);
+    color: var(--accent-2);
+    border: 1px solid transparent;
+  }
+
+  ul.limits { padding-left: 20px; color: var(--text-muted); }
+  ul.limits li { margin-bottom: 8px; }
+
+  footer {
+    padding: 40px 0 64px;
+    color: var(--text-muted);
+    font-size: 0.88rem;
+  }
+  footer a { color: var(--text); font-weight: 600; }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <span class="eyebrow">Portfolio-Projekt · EU AI Act</span>
+    <h1>Ist dein KI-System ein Hochrisiko-System? Und kannst du das beweisen?</h1>
+    <p class="lede">
+      Ein Tool, das einen KI-Use-Case deterministisch nach EU-AI-Act-Risikoklasse
+      einordnet — und die Klassifizierung an einem echten, live ausgeführten
+      metamorphen Test verifiziert, statt sie nur zu behaupten. Eine anwendbare
+      Miniatur von Marco Stangs Promotionsthema zur Validierung von KI-Systemen.
+    </p>
+    <div class="cta-row">
+      <a class="btn btn-primary" href="https://github.com/maggostang-droid/ai-act-validation-toolkit">GitHub-Repo ansehen</a>
+      <a class="btn btn-disabled" href="#" onclick="return false;" title="Deployment folgt in Kürze">Live-Demo (folgt in Kürze)</a>
+    </div>
+  </div>
+</header>
+
+<section>
+  <div class="wrap">
+    <h2>Was das Tool macht</h2>
+    <p class="section-intro">Vier Schritte von der Use-Case-Beschreibung bis zum prüffähigen Nachweis.</p>
+    <div class="steps">
+      <div class="card">
+        <span class="num">1</span>
+        <h3>Deterministisch klassifizieren</h3>
+        <p>Ein editierbarer Fragebogen zu Annex-III-Kriterien läuft durch einen
+        regelbasierten Entscheidungsbaum — keine Blackbox, jede Klasse ist
+        nachvollziehbar begründet.</p>
+      </div>
+      <div class="card">
+        <span class="num">2</span>
+        <h3>Begründung in Klartext</h3>
+        <p>Ein LLM formuliert nur die Prosa-Begründung zur bereits feststehenden
+        Klasse — es beeinflusst nie die Klassifizierung selbst.</p>
+      </div>
+      <div class="card">
+        <span class="num">3</span>
+        <h3>Metamorph testen</h3>
+        <p>Für den Automotive-Use-Case wird eine Monotonie-Relation gegen ein
+        simuliertes Komfortsystem tatsächlich ausgeführt — mit echten
+        Zahlen, nicht nur behauptet.</p>
+      </div>
+      <div class="card">
+        <span class="num">4</span>
+        <h3>Governance-Artefakt</h3>
+        <p>Für Hochrisiko-Fälle: Risk Assessment + Konformitätscheckliste
+        (Art. 9–15) als Markdown, in-App lesbar und herunterladbar.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Warum das relevant ist</h2>
+    <div class="why-grid">
+      <div>
+        <p style="color: var(--text-muted); margin-top:0;">
+          Das Thema ist keine Trend-Idee, sondern die direkte Anwendung von
+          Marco Stangs Dr.-Ing.-Forschung (KIT/ITIV, 2019–2025) zur
+          "Validierung von KI-Systemen durch Verknüpfung von Szenarien und
+          metamorphes Testen" — erprobt in einer Industriekooperation mit
+          Mercedes-Benz zu autonomen Fahrzeug-Komfortsystemen. Dieses Tool
+          überträgt die Methodik in Miniaturform auf ein akut zeitrelevantes
+          regulatorisches Thema.
+        </p>
+        <p style="color: var(--text-muted);">
+          Kein anderes Portfolio-Projekt kombiniert eine einschlägige
+          Promotion mit einem Governance-/Compliance-Use-Case — das ist der
+          Grund, warum dieses Projekt zuerst gebaut wurde.
+        </p>
+      </div>
+      <div>
+        <div class="stat-card">
+          <div class="label">EU AI Act Enforcement</div>
+          <div class="value">2. August 2026</div>
+          <div style="color: var(--text-muted); font-size: 0.85rem;">Beginn der Durchsetzungspflicht für Hochrisiko-Systeme</div>
+        </div>
+        <div class="stat-card">
+          <div class="label">Promotion</div>
+          <div class="value">Dr.-Ing., "Sehr gut"</div>
+          <div style="color: var(--text-muted); font-size: 0.85rem;">KIT/ITIV, 2019–2025, Industriekooperation Mercedes-Benz</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Architektur</h2>
+    <p class="section-intro">Deterministische Klassifizierung, LLM nur für Prosa, metamorphe Verifikation als eigenständiger Baustein.</p>
+    <div class="pipeline">
+      <div class="pipe-node"><strong>Use Case</strong>Fragebogen (Annex-III-Kriterien)</div>
+      <div class="pipe-arrow">→</div>
+      <div class="pipe-node"><strong>risk_engine.py</strong>deterministischer Regelbaum</div>
+      <div class="pipe-arrow">→</div>
+      <div class="pipe-node"><strong>Ampel</strong>Risikoklasse + Regel</div>
+      <div class="pipe-arrow">→</div>
+      <div class="pipe-node optional"><strong>rationale.py</strong>LLM-Begründung (optional)</div>
+      <div class="pipe-arrow">→</div>
+      <div class="pipe-node optional"><strong>metamorphic.py</strong>Test ausgeführt (Automotive)</div>
+      <div class="pipe-arrow">→</div>
+      <div class="pipe-node"><strong>governance.py</strong>Artefakt-Download</div>
+    </div>
+
+    <div style="height: 28px;"></div>
+
+    <div class="file-list">
+<div><span class="path">src/ai_act_toolkit/risk_engine.py</span>       <span class="desc"># deterministischer Annex-III-Regelbaum</span></div>
+<div><span class="path">src/ai_act_toolkit/use_cases.py</span>         <span class="desc"># 3 Beispiel-Use-Cases</span></div>
+<div><span class="path">src/ai_act_toolkit/comfort_system_sut.py</span> <span class="desc"># Toy-Komfortsystem + Monotonie-Relation</span></div>
+<div><span class="path">src/ai_act_toolkit/metamorphic.py</span>       <span class="desc"># generischer metamorpher Test-Runner</span></div>
+<div><span class="path">src/ai_act_toolkit/governance.py</span>       <span class="desc"># Governance-Artefakt-Generator</span></div>
+<div><span class="path">src/ai_act_toolkit/llm.py + rationale.py</span> <span class="desc"># LLM-Begründungstext</span></div>
+<div><span class="path">app.py</span>                                <span class="desc"># Streamlit-UI</span></div>
+    </div>
+
+    <div style="height: 24px;"></div>
+    <div class="badges">
+      <span class="badge">Python 3.10+</span>
+      <span class="badge">LangChain</span>
+      <span class="badge">Streamlit</span>
+      <span class="badge">pytest — 17 Tests, kein Netzwerk nötig</span>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Limitierungen</h2>
+    <ul class="limits">
+      <li>Keine rechtsverbindliche Compliance-Aussage, kein Ersatz für juristische Beratung oder ein echtes Konformitätsbewertungsverfahren.</li>
+      <li>Nur 3 fest hinterlegte Beispiel-Use-Cases, kein Freitext-Import.</li>
+      <li>Ein metamorpher Test (Monotonie-Relation), nicht die volle Szenario-Verknüpfungsmethodik der Promotion.</li>
+    </ul>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    Ein Portfolio-Projekt von <a href="https://github.com/maggostang-droid">Marco Stang</a> ·
+    <a href="https://github.com/maggostang-droid/ai-act-validation-toolkit">Quellcode auf GitHub</a>
+  </div>
+</footer>
+
+</body>
+</html>
