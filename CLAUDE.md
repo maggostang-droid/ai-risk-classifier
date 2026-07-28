@@ -66,10 +66,15 @@ reviewed:
 Die finale Whole-Branch-Review wurde durchgeführt, gefundene Findings sind
 gefixt (siehe `.superpowers/sdd/2026-07-28-ai-act-validation-toolkit-implementation/final-review-fix-report.md`).
 
+- ✅ GitHub-Repo angelegt und gepusht:
+  https://github.com/maggostang-droid/ai-act-validation-toolkit (public,
+  Branch `master`).
+
 Noch offen (kein Implementierungs-Task, sondern Deployment-Schritte):
 
 - ⬜ Manuelle Browser-Verifikation der App (bisher nur automatisiert via
   `streamlit.testing.v1.AppTest` geprüft).
 - ⬜ Testlauf mit echtem LLM-API-Key (bisher nur mit Mocks getestet).
-- ⬜ GitHub-Repo noch nicht angelegt/gepusht.
-- ⬜ Streamlit-Cloud-Deployment noch nicht eingerichtet.
+- ⬜ Streamlit-Cloud-Deployment noch nicht eingerichtet (braucht Marcos
+  Login auf share.streamlit.io + echten API-Key als Secret — siehe
+  Implementierungsplan, Task 10).
