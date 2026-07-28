@@ -26,7 +26,11 @@ COMFORT_SYSTEM = UseCase(
         "KI-System, das Kühlung/Heizung/Sitzeinstellung eines Fahrzeugs "
         "automatisch an Außentemperatur, Innentemperatur und Insassenzahl "
         "anpasst — angelehnt an eine Industriekooperation mit Mercedes-Benz "
-        "zu autonomen Fahrzeug-Komfortsystemen (Marcos Promotion, KIT/ITIV)."
+        "zu autonomen Fahrzeug-Komfortsystemen (Marcos Promotion, KIT/ITIV). "
+        "Die automatische Sitzverstellung greift in sicherheitsrelevante "
+        "Geometrie ein (Sitzposition/Rückhaltesystem), weshalb das System als "
+        "Bauteil eines typgenehmigungspflichtigen Fahrzeugs (Annex I / VO (EU) "
+        "2018/858) unter Art. 6(1) fällt."
     ),
     attributes=UseCaseAttributes(
         is_prohibited_practice=False,
