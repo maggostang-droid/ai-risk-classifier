@@ -81,15 +81,27 @@ classification = classify(attrs)
 label, display_fn = RISK_DISPLAY[classification.risk_class]
 display_fn(f"**{label}** — Regel: {classification.matched_rule}")
 
+# Session-State-Keys werden auf Use Case UND konkrete Klassifizierung gescoped:
+# so hängt die angezeigte Begründung nie an einem anderen Use Case oder einer
+# inzwischen durch den Fragebogen überholten Klassifizierung (siehe rationale.py:
+# der LLM-Prompt hängt exakt von use_case + risk_class + matched_rule ab, nicht
+# von den rohen Fragebogen-Attributen — dieselbe Klassifizierung liefert also
+# dieselbe gültige Begründung).
+rationale_key = (
+    f"rationale::{use_case.key}::{classification.risk_class.value}::{classification.matched_rule}"
+)
+metamorphic_key = f"metamorphic_result::{use_case.key}"
+
 if st.button("Begründung generieren (LLM)"):
     llm = get_llm()
-    st.session_state["rationale"] = generate_rationale(llm, use_case, classification)
+    with st.spinner("Begründung wird generiert..."):
+        st.session_state[rationale_key] = generate_rationale(llm, use_case, classification)
 
-rationale = st.session_state.get("rationale")
+rationale = st.session_state.get(rationale_key)
 if rationale:
     st.markdown(f"**Begründung:** {rationale}")
 
-metamorphic_result = st.session_state.get("metamorphic_result")
+metamorphic_result = st.session_state.get(metamorphic_key)
 if use_case.has_metamorphic_demo and classification.risk_class == RiskClass.HIGH_RISK:
     st.subheader("Metamorpher Test")
     st.markdown(TEMPERATURE_MONOTONICITY_RELATION.description)
@@ -100,7 +112,7 @@ if use_case.has_metamorphic_demo and classification.risk_class == RiskClass.HIGH
         metamorphic_result = run_relation(
             decide_cooling_intensity, TEMPERATURE_MONOTONICITY_RELATION, source_inputs
         )
-        st.session_state["metamorphic_result"] = metamorphic_result
+        st.session_state[metamorphic_key] = metamorphic_result
 
     if metamorphic_result:
         status = "✅ BESTANDEN" if metamorphic_result.passed else "❌ FEHLGESCHLAGEN"
@@ -119,5 +131,8 @@ if classification.risk_class == RiskClass.HIGH_RISK and rationale:
     artifact = generate_governance_artifact(use_case, classification, rationale, metamorphic_result)
     st.markdown(artifact)
     st.download_button(
-        "Als Markdown herunterladen", data=artifact, file_name=f"{use_case.key}_governance.md"
+        "Als Markdown herunterladen",
+        data=artifact,
+        file_name=f"{use_case.key}_governance.md",
+        mime="text/markdown",
     )
