@@ -93,9 +93,12 @@ rationale_key = (
 metamorphic_key = f"metamorphic_result::{use_case.key}"
 
 if st.button("Begründung generieren (LLM)"):
-    llm = get_llm()
-    with st.spinner("Begründung wird generiert..."):
-        st.session_state[rationale_key] = generate_rationale(llm, use_case, classification)
+    try:
+        llm = get_llm()
+        with st.spinner("Begründung wird generiert..."):
+            st.session_state[rationale_key] = generate_rationale(llm, use_case, classification)
+    except Exception as e:
+        st.error(f"Begründung konnte nicht automatisch generiert werden: {e}")
 
 rationale = st.session_state.get(rationale_key)
 if rationale:
@@ -126,9 +129,15 @@ if use_case.has_metamorphic_demo and classification.risk_class == RiskClass.HIGH
             f"Kühlintensität {metamorphic_result.followup_output:.1f}"
         )
 
-if classification.risk_class == RiskClass.HIGH_RISK and rationale:
+if classification.risk_class == RiskClass.HIGH_RISK:
     st.subheader("Governance-Artefakt")
-    artifact = generate_governance_artifact(use_case, classification, rationale, metamorphic_result)
+    artifact_rationale = rationale or (
+        f"Automatische Begründung nicht verfügbar. "
+        f"Klassifizierungsregel: {classification.matched_rule}"
+    )
+    artifact = generate_governance_artifact(
+        use_case, classification, artifact_rationale, metamorphic_result
+    )
     st.markdown(artifact)
     st.download_button(
         "Als Markdown herunterladen",
