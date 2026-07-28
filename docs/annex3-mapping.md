@@ -15,12 +15,12 @@ README, Abschnitt "Limitierungen".*
 |---|---|---|
 | `is_prohibited_practice` | **Art. 5** | Verbotene KI-Praktiken (z.B. Social Scoring, manipulative Techniken, ungezielte Erfassung von Gesichtsbildern). Trifft dieses Kriterium zu, ist das System unzulässig — unabhängig von allen anderen Kriterien. |
 | `is_safety_component_regulated_product` | **Art. 6(1) + Annex I** | KI-System ist Sicherheitsbauteil eines Produkts, das bereits einer sektorspezifischen EU-Konformitätsbewertung unterliegt (z.B. Maschinen, Fahrzeuge, Medizinprodukte gemäß den in Annex I gelisteten Harmonisierungsrechtsvorschriften). Führt direkt zu Hochrisiko, ohne Annex-III-Prüfung. |
-| `is_annex3_area` + `annex3_area` | **Art. 6(2) + Annex III** | KI-System fällt in einen der 9 in Annex III gelisteten Hochrisiko-Bereiche (siehe Tabelle unten). Notwendige, aber laut Art. 6(3) nicht hinreichende Bedingung für Hochrisiko. |
+| `is_annex3_area` + `annex3_area` | **Art. 6(2) + Annex III** | KI-System fällt in einen der 8 in Annex III gelisteten Hochrisiko-Bereiche (siehe Tabelle unten). Notwendige, aber laut Art. 6(3) nicht hinreichende Bedingung für Hochrisiko. |
 | `significant_risk_to_health_safety_fundamental_rights` | **Art. 6(3)** (Ausnahme) | Rückausnahme: Selbst wenn ein Annex-III-Bereich zutrifft, ist das System NICHT hochriskant, wenn es kein signifikantes Risiko für Gesundheit, Sicherheit oder Grundrechte darstellt (z.B. rein vorbereitende/unterstützende Aufgaben ohne Einfluss auf die Entscheidung). Im Toolkit als positives Kriterium modelliert: nur wenn `is_annex3_area` UND dieses Feld zutreffen, wird auf Hochrisiko klassifiziert. |
 | `has_transparency_obligation` | **Art. 50** | Transparenzpflichten für Systeme, die direkt mit natürlichen Personen interagieren (Chatbots), synthetische Inhalte erzeugen (Deepfakes) oder Emotionserkennung/biometrische Kategorisierung durchführen — unabhängig von der Hochrisiko-Einstufung. Führt zu "begrenztes Risiko", falls keine der obigen Kategorien bereits gegriffen hat. |
 | *(keines der obigen trifft zu)* | — | Minimales Risiko: keine spezifischen Pflichten über die allgemeinen Sorgfaltspflichten hinaus. |
 
-## Die 9 Annex-III-Bereiche (`Annex3Area`-Enum)
+## Die 8 Annex-III-Bereiche (`Annex3Area`-Enum)
 
 | Enum-Wert | Annex-III-Bereich (Kurzform) |
 |---|---|
@@ -32,12 +32,15 @@ README, Abschnitt "Limitierungen".*
 | `LAW_ENFORCEMENT` | Strafverfolgung |
 | `MIGRATION_ASYLUM_BORDER` | Migration, Asyl und Grenzkontrolle |
 | `JUSTICE_DEMOCRATIC_PROCESSES` | Rechtspflege und demokratische Prozesse |
-| `NONE` | Kein Annex-III-Bereich einschlägig |
 
-Hinweis: Die reale Annex-III-Liste umfasst faktisch acht benannte
-Kategorien plus die Biometrie-Kategorie, die selbst mehrere
-Unterpunkte hat; das Toolkit bildet sie zur Vereinfachung als neun
-disjunkte Enum-Werte ab statt die vollständige, teils überlappende
+`NONE` ist kein eigener Annex-III-Bereich, sondern der Sentinel-Wert für
+"keine der obigen acht Kategorien trifft zu" (Default, falls
+`is_annex3_area=False`).
+
+Hinweis: Die reale Annex-III-Liste hat mehrere Unterpunkte je Kategorie
+(z.B. mehrere biometrische Anwendungsfälle unter einem Punkt); das
+Toolkit bildet die acht Kategorien zur Vereinfachung als disjunkte
+Enum-Werte ab, ohne die vollständige, teils überlappende
 Unterpunkt-Struktur nachzubilden.
 
 ## Anwendungsbeispiele im Toolkit
