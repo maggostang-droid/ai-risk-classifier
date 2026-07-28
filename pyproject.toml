@@ -1,0 +1,24 @@
+[project]
+name = "ai-act-validation-toolkit"
+version = "0.1.0"
+description = "EU-AI-Act-Risikoklassifizierung + metamorphe Validierung (Portfolio-Miniatur von Marco Stangs Promotionsthema)"
+requires-python = ">=3.10"
+dependencies = [
+    "langchain>=0.3",
+    "langchain-anthropic>=0.3",
+    "langchain-openai>=0.2",
+    "python-dotenv>=1.0",
+    "streamlit>=1.38",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0",
+]
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.package-dir]
+"" = "src"
