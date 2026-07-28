@@ -51,4 +51,25 @@ aktiv mit, Konzepte erklären statt vorlösen, alle Doku auf Deutsch.
 *Diesen Abschnitt aktuell halten, sobald ein Task aus dem
 Implementierungsplan abgeschlossen ist.*
 
-- ✅ Design-Spec + Implementierungsplan erstellt und freigegeben.
+Alle 8 Implementierungs-Tasks sind fertig implementiert und einzeln
+reviewed:
+
+- ✅ Task 1: Projekt-Grundgerüst (pyproject, package skeleton, smoke test)
+- ✅ Task 2: `risk_engine.py` (deterministischer Annex-III-Regelbaum)
+- ✅ Task 3: `use_cases.py` (3 Beispiel-Use-Cases)
+- ✅ Task 4: `metamorphic.py` + `comfort_system_sut.py` (metamorpher Test-Runner)
+- ✅ Task 5: `governance.py` (Governance-Artefakt-Generator)
+- ✅ Task 6: `llm.py` + `rationale.py` (LLM-Anbindung)
+- ✅ Task 7: `app.py` (Streamlit-UI)
+- ✅ Task 8: README + CLAUDE.md
+
+Die finale Whole-Branch-Review wurde durchgeführt, gefundene Findings sind
+gefixt (siehe `.superpowers/sdd/2026-07-28-ai-act-validation-toolkit-implementation/final-review-fix-report.md`).
+
+Noch offen (kein Implementierungs-Task, sondern Deployment-Schritte):
+
+- ⬜ Manuelle Browser-Verifikation der App (bisher nur automatisiert via
+  `streamlit.testing.v1.AppTest` geprüft).
+- ⬜ Testlauf mit echtem LLM-API-Key (bisher nur mit Mocks getestet).
+- ⬜ GitHub-Repo noch nicht angelegt/gepusht.
+- ⬜ Streamlit-Cloud-Deployment noch nicht eingerichtet.
