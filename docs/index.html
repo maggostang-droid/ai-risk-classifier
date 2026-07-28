@@ -229,6 +229,67 @@
   ul.limits { padding-left: 20px; color: var(--text-muted); }
   ul.limits li { margin-bottom: 8px; }
 
+  .table-wrap {
+    overflow-x: auto;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+  }
+  table.usecases {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--bg-alt);
+    font-size: 0.92rem;
+  }
+  table.usecases th, table.usecases td,
+  table.techstack td {
+    text-align: left;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+  }
+  table.usecases th, table.usecases td { white-space: nowrap; }
+  table.techstack { width: 100%; border-collapse: collapse; background: var(--bg-alt); font-size: 0.9rem; }
+  table.techstack tr:last-child td { border-bottom: none; }
+  table.techstack td:first-child {
+    white-space: nowrap;
+    color: var(--text-muted);
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    width: 1%;
+  }
+  table.usecases th {
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: var(--text-muted);
+  }
+  table.usecases tr:last-child td { border-bottom: none; }
+  .risk-high { color: var(--accent); font-weight: 600; }
+  .risk-limited { color: var(--accent-2); font-weight: 600; }
+  .check-yes { color: var(--accent-2); font-weight: 700; }
+  .check-no { color: var(--text-muted); }
+
+  .doc-links { display: grid; gap: 10px; }
+  .doc-link {
+    display: block;
+    background: var(--bg-alt);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 18px;
+    box-shadow: var(--shadow);
+  }
+  .doc-link strong { display: block; color: var(--text); font-size: 0.95rem; margin-bottom: 2px; }
+  .doc-link span { color: var(--text-muted); font-size: 0.85rem; }
+
+  code {
+    font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+    font-size: 0.88em;
+    background: var(--code-bg);
+    padding: 1px 5px;
+    border-radius: 4px;
+  }
+
   footer {
     padding: 40px 0 64px;
     color: var(--text-muted);
@@ -293,6 +354,40 @@
 
 <section>
   <div class="wrap">
+    <h2>Beispiel-Use-Cases</h2>
+    <p class="section-intro">Drei fest hinterlegte Beispiele zeigen die Bandbreite der Risikoklassen. Der Fragebogen ist pro Use Case live editierbar — keine Lookup-Tabelle, sondern ein echter Klassifizierer.</p>
+    <div class="table-wrap">
+      <table class="usecases">
+        <thead>
+          <tr><th>Use Case</th><th>Risikoklasse</th><th>Regel</th><th>Metamorpher Test</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Autonomes Fahrzeug-Komfortsystem</td>
+            <td class="risk-high">🟠 Hochrisiko</td>
+            <td>Art. 6(1) — Sicherheitsbauteil</td>
+            <td class="check-yes">✓ ausgeführt</td>
+          </tr>
+          <tr>
+            <td>KI-gestützte Bewerber-Vorauswahl</td>
+            <td class="risk-high">🟠 Hochrisiko</td>
+            <td>Art. 6(2) + Annex III (Beschäftigung)</td>
+            <td class="check-no">—</td>
+          </tr>
+          <tr>
+            <td>Kundenservice-Chatbot</td>
+            <td class="risk-limited">🔵 Begrenztes Risiko</td>
+            <td>Art. 50 — Transparenzpflicht</td>
+            <td class="check-no">—</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
     <h2>Warum das relevant ist</h2>
     <div class="why-grid">
       <div>
@@ -345,6 +440,29 @@
       <div class="pipe-node"><strong>governance.py</strong>Artefakt-Download</div>
     </div>
 
+    <div style="height: 24px;"></div>
+
+    <div class="steps">
+      <div class="card">
+        <h3>Klassifizierung ist deterministisch</h3>
+        <p><code>risk_engine.py</code> hat keine LLM-Abhängigkeit. Ein LLM
+        bekommt das fertige Ergebnis nur zur Übersetzung in Prosa gereicht
+        und kann die Klasse nicht beeinflussen.</p>
+      </div>
+      <div class="card">
+        <h3>Metamorpher Test als Methodik-Beweis</h3>
+        <p>Statt eine Ausgabe gegen ein unbekanntes "richtiges" Ergebnis zu
+        prüfen, prüft er eine Beziehung zwischen zwei Ausgaben — das
+        Orakel-Problem umgangen, genau wie in der Promotion.</p>
+      </div>
+      <div class="card">
+        <h3>Artefakt bleibt ohne LLM verfügbar</h3>
+        <p>Fällt die LLM-Begründung aus, zeigt die App einen Fehlerhinweis
+        statt eines Absturzes und generiert das Governance-Artefakt
+        trotzdem mit einem regelbasierten Fallback-Text.</p>
+      </div>
+    </div>
+
     <div style="height: 28px;"></div>
 
     <div class="file-list">
@@ -358,11 +476,43 @@
     </div>
 
     <div style="height: 24px;"></div>
-    <div class="badges">
-      <span class="badge">Python 3.10+</span>
-      <span class="badge">LangChain</span>
-      <span class="badge">Streamlit</span>
-      <span class="badge">pytest — 17 Tests, kein Netzwerk nötig</span>
+    <h3 style="font-size: 1.05rem; margin: 0 0 12px;">Tech-Stack</h3>
+    <div class="table-wrap">
+      <table class="techstack">
+        <tbody>
+          <tr><td>Sprache</td><td>Python ≥ 3.10</td></tr>
+          <tr><td>LLM-Anbindung</td><td>LangChain (<code>init_chat_model</code>) + langchain-anthropic / langchain-openai — provider-agnostisch über <code>.env</code></td></tr>
+          <tr><td>UI</td><td>Streamlit</td></tr>
+          <tr><td>Tests</td><td>pytest, 17 Tests + <code>streamlit.testing.v1.AppTest</code> (kein Browser nötig)</td></tr>
+          <tr><td>Konfiguration</td><td>python-dotenv, keine hartcodierten Secrets</td></tr>
+          <tr><td>Demo-Hosting</td><td>Streamlit Community Cloud</td></tr>
+          <tr><td>Projektseiten-Hosting</td><td>GitHub Pages (diese Seite — self-contained, kein CDN)</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Weiterführende Dokumentation</h2>
+    <div class="doc-links">
+      <a class="doc-link" href="https://github.com/maggostang-droid/ai-act-validation-toolkit/blob/master/docs/annex3-mapping.md">
+        <strong>Annex-III-Mapping</strong>
+        <span>Jedes Fragebogen-Kriterium der jeweiligen Rechtsgrundlage im EU AI Act zugeordnet</span>
+      </a>
+      <a class="doc-link" href="https://github.com/maggostang-droid/ai-act-validation-toolkit/tree/master/docs/superpowers/specs">
+        <strong>Design-Spec</strong>
+        <span>Alle Architekturentscheidungen, mit Marco im Brainstorming abgestimmt</span>
+      </a>
+      <a class="doc-link" href="https://github.com/maggostang-droid/ai-act-validation-toolkit/tree/master/docs/superpowers/plans">
+        <strong>Implementierungsplan</strong>
+        <span>10 Tasks inkl. vollständigem Code, umgesetzt über Subagent-Driven Development</span>
+      </a>
+      <a class="doc-link" href="https://github.com/maggostang-droid/ai-act-validation-toolkit/blob/master/HANDOVER.md">
+        <strong>Handover-Dokument</strong>
+        <span>Projektstatus + bekannte offene Punkte, für den Wiedereinstieg ohne vorherigen Kontext</span>
+      </a>
     </div>
   </div>
 </section>
