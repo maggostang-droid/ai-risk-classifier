@@ -1,9 +1,9 @@
-# ai-act-validation-toolkit
+# AI Risk Classifier
 
 Portfolio-Projekt von Marco Stang für Bewerbungen auf AI/KI-Rollen (ggf.
 auch KI-Transformations-Rollen).
 
-🔗 **[Projektseite](https://maggostang-droid.github.io/ai-act-validation-toolkit/)**
+🔗 **[Projektseite](https://maggostang-droid.github.io/ai-risk-classifier/)**
 — Überblick, Architektur, Motivation (kein Ersatz für die Live-Demo, siehe
 unten).
 
@@ -21,7 +21,7 @@ Industriekooperation mit Mercedes-Benz zu autonomen
 Fahrzeug-Komfortsystemen. Kein anderes Portfolio-Projekt kombiniert eine
 einschlägige Promotion mit einem akut zeitrelevanten
 Governance-/Compliance-Use-Case — das ist der Grund, warum dieses Projekt
-zuerst gebaut wurde (siehe `../PORTFOLIO_BACKLOG.md`, Item #0).
+zuerst gebaut wurde.
 
 ## Live-Demo
 
