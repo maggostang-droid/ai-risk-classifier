@@ -3,6 +3,9 @@
 Portfolio-Projekt von Marco Stang für Bewerbungen auf AI/KI-Rollen (ggf.
 auch KI-Transformations-Rollen).
 
+<!-- TODO(Marco): Screenshot der Demo hier einfügen:
+     ![AI Risk Classifier — Ampel-Klassifizierung mit Fragebogen](docs/demo.png) -->
+
 🔗 **[Projektseite](https://maggostang-droid.github.io/ai-risk-classifier/)**
 — Überblick, Architektur, Motivation (kein Ersatz für die Live-Demo, siehe
 unten).
@@ -125,12 +128,12 @@ Vordergrund steht statt Infrastruktur.
 
 ## Quickstart
 
-```bash
-python -m venv .venv
-.venv/Scripts/python.exe -m pip install -e ".[dev]"
-cp .env.example .env  # LLM_PROVIDER/LLM_MODEL/API-Key eintragen
+Einmalig: `python -m venv .venv` und
+`.venv/Scripts/python.exe -m pip install -e ".[dev]"`. Danach:
 
-.venv/Scripts/python.exe -m pytest tests/ -v
+```bash
+cp .env.example .env                          # LLM_PROVIDER/LLM_MODEL/API-Key eintragen
+.venv/Scripts/python.exe -m pytest tests/ -v  # 17 Tests, ohne Netzwerk/LLM
 .venv/Scripts/python.exe -m streamlit run app.py
 ```
 
@@ -167,3 +170,13 @@ erkennt und nicht einfach immer grün anzeigt.
 - Nur 3 fest hinterlegte Beispiel-Use-Cases, kein Freitext-Import.
 - Ein metamorpher Test (Monotonie-Relation), nicht die volle
   Szenario-Verknüpfungsmethodik der Promotion.
+
+## Portfolio-Kontext
+
+Dieses Projekt ist Teil von **[MARCO.OS](https://maggostang-droid.github.io/marco-os/)**,
+dem interaktiven Portfolio von Marco Stang — dort lässt sich diese Demo
+direkt im Projektfenster ausprobieren. Schwesterprojekte:
+
+- [SQL Copilot](https://github.com/maggostang-droid/sql-copilot) — LangGraph-Agent für Text-to-SQL mit Guardrails und Selbstkorrektur
+- [Review Risk Predictor](https://github.com/maggostang-droid/review-risk-predictor) — erklärbare ML-Risikovorhersage (React/FastAPI)
+- [Ask-Marco Assistant](https://github.com/maggostang-droid/ask-marco-assistant) — Chat, der alle Portfolio-Projekte kennt (Context-Stuffing + MCP-Server)
