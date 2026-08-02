@@ -1,6 +1,6 @@
 """Drei fest hinterlegte Beispiel-Use-Cases für die Demo.
 
-Bewusst kein Freitext-Import (siehe Design-Spec, "Bewusst weggelassen") —
+Bewusst kein Freitext-Import (siehe Design-Spec, "Bewusst weggelassen") ,
 jeder Use Case hat vordefinierte, im Fragebogen der App editierbare
 Annex-III-Attribute.
 """
@@ -25,7 +25,7 @@ COMFORT_SYSTEM = UseCase(
     description=(
         "KI-System, das Kühlung/Heizung/Sitzeinstellung eines Fahrzeugs "
         "automatisch an Außentemperatur, Innentemperatur und Insassenzahl "
-        "anpasst — angelehnt an eine Industriekooperation mit Mercedes-Benz "
+        "anpasst, angelehnt an eine Industriekooperation mit Mercedes-Benz "
         "zu autonomen Fahrzeug-Komfortsystemen (Marcos Promotion, KIT/ITIV). "
         "Die automatische Sitzverstellung greift in sicherheitsrelevante "
         "Geometrie ein (Sitzposition/Rückhaltesystem), weshalb das System als "

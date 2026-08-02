@@ -8,31 +8,31 @@ from ai_act_toolkit.use_cases import UseCase
 
 OBLIGATIONS = [
     (
-        "Art. 9 — Risikomanagementsystem",
+        "Art. 9, Risikomanagementsystem",
         "Kontinuierlicher Prozess zur Identifikation/Minderung von Risiken über den Lebenszyklus.",
     ),
     (
-        "Art. 10 — Daten- und Datenqualitätsmanagement",
+        "Art. 10, Daten- und Datenqualitätsmanagement",
         "Trainings-/Validierungs-/Testdaten müssen repräsentativ, fehlerfrei und vollständig sein.",
     ),
     (
-        "Art. 11 — Technische Dokumentation",
+        "Art. 11, Technische Dokumentation",
         "Nachweisbare Dokumentation zu Design, Entwicklung und Leistung.",
     ),
     (
-        "Art. 12 — Aufzeichnungspflichten (Logging)",
+        "Art. 12, Aufzeichnungspflichten (Logging)",
         "Automatische Protokollierung während des Betriebs.",
     ),
     (
-        "Art. 13 — Transparenz und Informationsbereitstellung",
+        "Art. 13, Transparenz und Informationsbereitstellung",
         "Verständliche Betriebsanleitung für Betreiber.",
     ),
     (
-        "Art. 14 — Menschliche Aufsicht",
+        "Art. 14, Menschliche Aufsicht",
         "Wirksame Aufsichtsmaßnahmen zur Verhinderung/Minimierung von Risiken.",
     ),
     (
-        "Art. 15 — Genauigkeit, Robustheit, Cybersicherheit",
+        "Art. 15, Genauigkeit, Robustheit, Cybersicherheit",
         "Angemessenes Leistungsniveau über den gesamten Lebenszyklus.",
     ),
 ]
@@ -56,7 +56,7 @@ def generate_governance_artifact(
         Markdown-formatiertes Governance-Artefakt als String
     """
     lines = [
-        f"# Risk Assessment & Konformitätscheckliste — {use_case.title}",
+        f"# Risk Assessment & Konformitätscheckliste, {use_case.title}",
         "",
         "## Systembeschreibung",
         use_case.description,
@@ -74,7 +74,7 @@ def generate_governance_artifact(
         status = "BESTANDEN" if metamorphic_result.passed else "FEHLGESCHLAGEN"
         lines += [
             "## Metamorpher Test",
-            f"**Relation:** {metamorphic_result.relation.name} — {metamorphic_result.relation.description}",
+            f"**Relation:** {metamorphic_result.relation.name}, {metamorphic_result.relation.description}",
             f"**Ergebnis:** {status}",
             f"- Quellfall: {metamorphic_result.source_inputs} -> {metamorphic_result.source_output:.1f}",
             f"- Folgefall: {metamorphic_result.followup_inputs} -> {metamorphic_result.followup_output:.1f}",
@@ -83,7 +83,7 @@ def generate_governance_artifact(
 
     lines.append("## Konformitätscheckliste (EU AI Act, high-risk)")
     for title, desc in OBLIGATIONS:
-        lines.append(f"- [ ] **{title}** — {desc}")
+        lines.append(f"- [ ] **{title}**, {desc}")
     lines += [
         "",
         (

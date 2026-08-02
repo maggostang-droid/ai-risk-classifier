@@ -4,7 +4,7 @@ Eine metamorphe Relation prüft nicht eine einzelne Ausgabe gegen ein
 festes Referenzergebnis (das "Orakel-Problem" bei KI-Systemen: die
 "richtige" Ausgabe ist oft unbekannt), sondern eine Beziehung zwischen
 der Ausgabe eines Quellfalls und der Ausgabe eines daraus abgeleiteten
-Folgefalls — genau das Prinzip aus Marcos Promotion, hier auf einen
+Folgefalls, genau das Prinzip aus Marcos Promotion, hier auf einen
 konkret ausführbaren Fall reduziert.
 """
 

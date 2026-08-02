@@ -1,6 +1,6 @@
 """Toy-'System unter Test': simuliertes KI-Komfortsystem.
 
-Kein echtes ML-Modell — ein bewusst einfaches, deterministisches Stellvertreter-
+Kein echtes ML-Modell, ein bewusst einfaches, deterministisches Stellvertreter-
 Modell, an dem die metamorphe Testmethodik konkret demonstriert wird.
 """
 

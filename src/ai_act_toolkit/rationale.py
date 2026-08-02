@@ -1,4 +1,4 @@
-"""Lässt ein LLM nur die Begründung in Klartext formulieren — die
+"""Lässt ein LLM nur die Begründung in Klartext formulieren, die
 Risikoklasse selbst kommt deterministisch aus risk_engine.classify().
 """
 

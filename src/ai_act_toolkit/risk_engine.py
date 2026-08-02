@@ -4,7 +4,7 @@ Bewusst vereinfachte, aber an der echten Artikel-Struktur orientierte
 Nachbildung von Art. 5 (verbotene Praktiken), Art. 6(1) (Sicherheitsbauteile
 regulierter Produkte), Art. 6(2)+Annex III (Hochrisiko-Bereiche, mit der
 Art.-6(3)-Ausnahme bei fehlendem signifikantem Risiko) und Art. 50
-(Transparenzpflichten). Kein Ersatz für eine juristische Prüfung — siehe
+(Transparenzpflichten). Kein Ersatz für eine juristische Prüfung, siehe
 README, Abschnitt "Limitierungen".
 """
 
