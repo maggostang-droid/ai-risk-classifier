@@ -1,10 +1,10 @@
-"""Toy-'System unter Test': simuliertes KI-Komfortsystem.
+"""Toy-'System unter Test': simulierte Klimasteuerung des Komfortsystems.
 
 Kein echtes ML-Modell, ein bewusst einfaches, deterministisches Stellvertreter-
 Modell, an dem die metamorphe Testmethodik konkret demonstriert wird.
 """
 
-from ai_act_toolkit.metamorphic import MetamorphicRelation
+from ai_act_toolkit.metamorphic.core import MetamorphicRelation
 
 
 def decide_cooling_intensity(
@@ -30,4 +30,5 @@ TEMPERATURE_MONOTONICITY_RELATION = MetamorphicRelation(
     ),
     transform=lambda inputs: {**inputs, "outside_temp_c": inputs["outside_temp_c"] + 5.0},
     check=lambda source_output, followup_output: followup_output >= source_output,
+    evidence_for="Art. 15",
 )

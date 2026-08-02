@@ -1,9 +1,9 @@
-from ai_act_toolkit.comfort_system_sut import (
+from ai_act_toolkit.governance import generate_governance_artifact
+from ai_act_toolkit.metamorphic import run_relation
+from ai_act_toolkit.suts.comfort_climate import (
     TEMPERATURE_MONOTONICITY_RELATION,
     decide_cooling_intensity,
 )
-from ai_act_toolkit.governance import generate_governance_artifact
-from ai_act_toolkit.metamorphic import run_relation
 from ai_act_toolkit.risk_engine import ClassificationResult, RiskClass
 from ai_act_toolkit.use_cases import COMFORT_SYSTEM
 

@@ -18,13 +18,13 @@ from portfolio_ui import (
     under_the_hood,
 )
 
-from ai_act_toolkit.comfort_system_sut import (
-    TEMPERATURE_MONOTONICITY_RELATION,
-    decide_cooling_intensity,
-)
 from ai_act_toolkit.governance import generate_governance_artifact
 from ai_act_toolkit.llm import get_llm
 from ai_act_toolkit.metamorphic import run_relation
+from ai_act_toolkit.suts.comfort_climate import (
+    TEMPERATURE_MONOTONICITY_RELATION,
+    decide_cooling_intensity,
+)
 from ai_act_toolkit.rationale import generate_rationale
 from ai_act_toolkit.risk_engine import Annex3Area, RiskClass, UseCaseAttributes, classify
 from ai_act_toolkit.use_cases import ALL_USE_CASES
