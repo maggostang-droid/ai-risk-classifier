@@ -1,60 +1,118 @@
-"""Generiert das Governance-Artefakt (Risk Assessment + Konformitätscheckliste)
-als Markdown für Hochrisiko-Use-Cases.
+"""Erzeugt das Governance-Artefakt: Risk Assessment plus Konformitätscheckliste.
+
+Der Unterschied zur früheren Fassung: die Checkliste ist keine Konstante
+mehr. Jede Pflicht wird in einem von drei Zuständen gerendert —
+
+    [x]  belegt: eine metamorphe Relation, die auf diesen Artikel einzahlt,
+         wurde ausgeführt und bestanden
+    [~]  teilweise: dieses Artefakt selbst ist ein Beitrag zur Pflicht
+         (Annex IV Nr. 2(g): dokumentiertes Testverfahren)
+    [ ]  offen: kein Nachweis geführt, oder reine Prozesspflicht
+
+Damit ist der metamorphe Test nicht mehr ein Abschnitt neben der Checkliste,
+sondern das, was die Checkliste abhakt.
 """
 
-from ai_act_toolkit.metamorphic import MetamorphicResult
+from dataclasses import dataclass
+
+from ai_act_toolkit.metamorphic.mutation import KillMatrix
+from ai_act_toolkit.metamorphic.suite import SuiteResult
+from ai_act_toolkit.obligations import EvidenceKind, Obligation
 from ai_act_toolkit.risk_engine import ClassificationResult
 from ai_act_toolkit.use_cases import UseCase
 
-OBLIGATIONS = [
-    (
-        "Art. 9, Risikomanagementsystem",
-        "Kontinuierlicher Prozess zur Identifikation/Minderung von Risiken über den Lebenszyklus.",
-    ),
-    (
-        "Art. 10, Daten- und Datenqualitätsmanagement",
-        "Trainings-/Validierungs-/Testdaten müssen repräsentativ, fehlerfrei und vollständig sein.",
-    ),
-    (
-        "Art. 11, Technische Dokumentation",
-        "Nachweisbare Dokumentation zu Design, Entwicklung und Leistung.",
-    ),
-    (
-        "Art. 12, Aufzeichnungspflichten (Logging)",
-        "Automatische Protokollierung während des Betriebs.",
-    ),
-    (
-        "Art. 13, Transparenz und Informationsbereitstellung",
-        "Verständliche Betriebsanleitung für Betreiber.",
-    ),
-    (
-        "Art. 14, Menschliche Aufsicht",
-        "Wirksame Aufsichtsmaßnahmen zur Verhinderung/Minimierung von Risiken.",
-    ),
-    (
-        "Art. 15, Genauigkeit, Robustheit, Cybersicherheit",
-        "Angemessenes Leistungsniveau über den gesamten Lebenszyklus.",
-    ),
-]
+
+@dataclass(frozen=True)
+class EvidenceEntry:
+    """Was für eine SUT tatsächlich ausgeführt wurde."""
+
+    sut_label: str
+    suite_result: SuiteResult
+    kill_matrix: KillMatrix
+
+
+@dataclass(frozen=True)
+class EvidenceBundle:
+    entries: tuple[EvidenceEntry, ...]
+
+    def articles_covered(self) -> set[str]:
+        """Artikel, für die mindestens eine Relation lief und alle bestanden."""
+        covered: set[str] = set()
+        for entry in self.entries:
+            for article, results in entry.suite_result.by_article().items():
+                if all(result.passed for result in results):
+                    covered.add(article)
+        return covered
+
+    def summary_for(self, article: str) -> str:
+        """Kurzbeleg für die Checkliste."""
+        parts = []
+        for entry in self.entries:
+            results = entry.suite_result.by_article().get(article, [])
+            if not results:
+                continue
+            names = ", ".join(result.relation.name for result in results)
+            killed, total = entry.kill_matrix.score
+            parts.append(
+                f"{entry.sut_label}: {names} bestanden, Mutation Score {killed}/{total}"
+            )
+        return "; ".join(parts)
+
+
+def render_kill_matrix(kill_matrix: KillMatrix) -> str:
+    """Rendert die Kill-Matrix als Markdown-Tabelle mit Mutation Score."""
+    header = "| Relation | " + " | ".join(m.label for m in kill_matrix.mutants) + " |"
+    divider = "|---" * (len(kill_matrix.mutants) + 1) + "|"
+    rows = []
+    for relation in kill_matrix.relations:
+        cells = [
+            "getötet" if kill_matrix.killed[(relation.name, mutant.key)] else "überlebt"
+            for mutant in kill_matrix.mutants
+        ]
+        rows.append(f"| {relation.name} | " + " | ".join(cells) + " |")
+    killed, total = kill_matrix.score
+    survivors = ", ".join(m.label for m in kill_matrix.survivors()) or "keine"
+    return "\n".join(
+        [
+            header,
+            divider,
+            *rows,
+            "",
+            f"**Mutation Score: {killed}/{total}**",
+            "Überlebende Mutanten (bekannte Blindstellen der Relationsmenge): "
+            f"{survivors}",
+        ]
+    )
+
+
+_PARTIAL_NOTE = (
+    "teilweise: dieses Artefakt dokumentiert das verwendete Testverfahren "
+    "(Annex IV Nr. 2(g))."
+)
+_PROCESS_NOTE = "Prozesspflicht, durch dieses Werkzeug nicht belegbar."
+
+
+def _render_obligation(obligation: Obligation, evidence: EvidenceBundle | None) -> str:
+    head = f"**{obligation.article}** {obligation.title}"
+    if obligation.evidence_kind is EvidenceKind.TECHNICAL_TEST:
+        if evidence is not None and obligation.article in evidence.articles_covered():
+            return f"- [x] {head} — belegt: {evidence.summary_for(obligation.article)}"
+        return f"- [ ] {head} — offen: kein Nachweis ausgeführt."
+    if obligation.evidence_kind is EvidenceKind.DOCUMENTATION:
+        if evidence is not None:
+            return f"- [~] {head} — {_PARTIAL_NOTE}"
+        return f"- [ ] {head} — offen: kein Testverfahren dokumentiert."
+    return f"- [ ] {head} — {_PROCESS_NOTE}"
 
 
 def generate_governance_artifact(
     use_case: UseCase,
     classification: ClassificationResult,
     rationale: str,
-    metamorphic_result: MetamorphicResult | None,
+    obligations: list[Obligation],
+    evidence: EvidenceBundle | None,
 ) -> str:
-    """Generiert ein Markdown Risk Assessment und Konformitätscheckliste für Hochrisiko-Use-Cases.
-
-    Args:
-        use_case: Beschreibung des AI-Systems
-        classification: Risikoklassifizierung und Regel
-        rationale: Begründung der Klassifizierung
-        metamorphic_result: Optional Ergebnis des metamorphen Tests
-
-    Returns:
-        Markdown-formatiertes Governance-Artefakt als String
-    """
+    """Baut das Markdown-Artefakt aus Einstufung, Pflichten und vorhandener Evidenz."""
     lines = [
         f"# Risk Assessment & Konformitätscheckliste, {use_case.title}",
         "",
@@ -70,20 +128,36 @@ def generate_governance_artifact(
         "",
     ]
 
-    if metamorphic_result is not None:
-        status = "BESTANDEN" if metamorphic_result.passed else "FEHLGESCHLAGEN"
-        lines += [
-            "## Metamorpher Test",
-            f"**Relation:** {metamorphic_result.relation.name}, {metamorphic_result.relation.description}",
-            f"**Ergebnis:** {status}",
-            f"- Quellfall: {metamorphic_result.source_inputs} -> {metamorphic_result.source_output:.1f}",
-            f"- Folgefall: {metamorphic_result.followup_inputs} -> {metamorphic_result.followup_output:.1f}",
-            "",
-        ]
+    if evidence is not None and evidence.entries:
+        lines += ["## Nachweise", ""]
+        for entry in evidence.entries:
+            passed, total = entry.suite_result.counts
+            lines += [
+                f"### {entry.sut_label}",
+                f"Metamorphe Relations-Suite: {passed}/{total} bestanden.",
+                "",
+            ]
+            for result in entry.suite_result.results:
+                status = "bestanden" if result.passed else "FEHLGESCHLAGEN"
+                lines += [
+                    f"- **{result.relation.name}** "
+                    f"({result.relation.evidence_for}): {status}",
+                    f"  - {result.relation.description}",
+                    f"  - Quellfall {result.source_inputs} → {result.source_output:.2f}",
+                    f"  - Folgefall {result.followup_inputs} "
+                    f"→ {result.followup_output:.2f}",
+                ]
+            lines += [
+                "",
+                "Mutationsanalyse (Annex IV Nr. 2(g), Güte des Testverfahrens):",
+                "",
+                render_kill_matrix(entry.kill_matrix),
+                "",
+            ]
 
-    lines.append("## Konformitätscheckliste (EU AI Act, high-risk)")
-    for title, desc in OBLIGATIONS:
-        lines.append(f"- [ ] **{title}**, {desc}")
+    lines += ["## Konformitätscheckliste", ""]
+    for obligation in obligations:
+        lines.append(_render_obligation(obligation, evidence))
     lines += [
         "",
         (

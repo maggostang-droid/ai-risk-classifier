@@ -2,7 +2,8 @@
 
 Bewusst kein Freitext-Import (siehe Design-Spec, "Bewusst weggelassen") ,
 jeder Use Case hat vordefinierte, im Fragebogen der App editierbare
-Annex-III-Attribute.
+Annex-III-Attribute. Welche Systeme unter Test zu einem Use Case gehoeren,
+steht in `suts/__init__.py` — dieses Modul bleibt reine Falldaten.
 """
 
 from dataclasses import dataclass
@@ -16,7 +17,6 @@ class UseCase:
     title: str
     description: str
     attributes: UseCaseAttributes
-    has_metamorphic_demo: bool
 
 
 COMFORT_SYSTEM = UseCase(
@@ -40,7 +40,6 @@ COMFORT_SYSTEM = UseCase(
         significant_risk_to_health_safety_fundamental_rights=True,
         has_transparency_obligation=False,
     ),
-    has_metamorphic_demo=True,
 )
 
 RECRUITING = UseCase(
@@ -58,7 +57,6 @@ RECRUITING = UseCase(
         significant_risk_to_health_safety_fundamental_rights=True,
         has_transparency_obligation=False,
     ),
-    has_metamorphic_demo=False,
 )
 
 CHATBOT = UseCase(
@@ -76,7 +74,6 @@ CHATBOT = UseCase(
         significant_risk_to_health_safety_fundamental_rights=False,
         has_transparency_obligation=True,
     ),
-    has_metamorphic_demo=False,
 )
 
 ALL_USE_CASES = [COMFORT_SYSTEM, RECRUITING, CHATBOT]

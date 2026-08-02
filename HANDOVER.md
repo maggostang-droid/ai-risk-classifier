@@ -1,24 +1,26 @@
-# Handover — ai-act-validation-toolkit
+# Handover — AI Act Evidence Toolkit
 
-Für jede neue Agenten-Session (Claude Code oder sonst), die an diesem
-Projekt weiterarbeitet, ohne den bisherigen Chatverlauf zu kennen. Stand:
-2026-07-28.
+Für jede neue Agenten-Session, die an diesem Projekt weiterarbeitet, ohne
+den bisherigen Chatverlauf zu kennen.
 
-## TL;DR
+## TL;DR (Stand 2026-08-02)
 
-**Projekt ist komplett fertig** — implementiert, getestet, reviewed, auf
-GitHub veröffentlicht und live deployed. Alle 10 Plan-Tasks abgeschlossen.
+Zwei Ausbaustufen liegen hinter dem Projekt:
 
-- Repo: https://github.com/maggostang-droid/ai-act-validation-toolkit (public, Branch `master`)
-- Projektseite (GitHub Pages): https://maggostang-droid.github.io/ai-act-validation-toolkit/
-- Live-Demo (Streamlit): https://ai-act-validation-toolkit.streamlit.app/ (von Marco deployed + als erreichbar bestätigt)
-- Tests: `pytest tests/ -v` → 17/17 grün, kein Netzwerk/LLM nötig
+1. **2026-07-28, Erstbau:** Risikoklassifizierung per Regelbaum, ein
+   metamorpher Test, Governance-Checkliste. 17 Tests, deployed.
+2. **2026-08-02, Umbau zum Evidence Toolkit:** metamorphes Testen wurde vom
+   Nebenfeature zum Kern. Die Einstufung erzeugt jetzt konkrete
+   Artikelpflichten, drei Systeme unter Test liefern die Evidenz, und das
+   Artefakt hakt nur ab, was belegt wurde. 74 Tests, ruff, CI.
 
-**Falls du hier landest, weil das nächste Backlog-Item ansteht:** dieses
-Projekt braucht keine weitere Arbeit mehr. Nächster Schritt ist, in
-`../PORTFOLIO_BACKLOG.md` das nächsthöchste `offen`-Item aufzugreifen
-(`cloud-native-pipeline`, Stand 2026-07-28) — siehe
-`../PORTFOLIO_AGENT_GUIDE.md` für den Ablauf.
+**Der aktuelle Stand steht in `CLAUDE.md`, Abschnitt „Aktueller Stand".**
+Dieses Dokument hier ist die Entstehungsgeschichte, nicht der Statusbericht.
+
+- Repo: https://github.com/maggostang-droid/ai-risk-classifier (public)
+- Projektseite: https://maggostang-droid.github.io/ai-act-validation-toolkit/
+- Live-Demo: https://ai-act-validation-toolkit.streamlit.app/
+- Tests: `pytest tests/ -v` → 74 grün, kein Netzwerk/LLM nötig
 
 ## Wie dieses Projekt entstanden ist
 
@@ -77,13 +79,15 @@ geparkt (nicht blockierend):
 - `rationale.py`: `generate_rationale()` ist als `-> str` typisiert, manche
   LangChain-Provider liefern aber ggf. `list[dict]` als `response.content`.
 
-**Nicht umgesetzt, aber als sinnvolle Erweiterung im finalen Review
-vorgeschlagen:** ein Toggle in der App, der eine absichtlich kaputte SUT
-verwendet, damit der metamorphe Test auch mal sichtbar FEHLSCHLÄGT (aktuell
-zeigt die App immer BESTANDEN, weil die geshippte SUT konstruktionsbedingt
-monoton ist — nur der pytest `test_broken_sut_fails_relation` beweist, dass
-der Runner Verletzungen erkennt). Wäre ein guter "Beweis"-Moment für
-Recruiter, ist aber reine UI-Erweiterung, kein Bugfix.
+**Erledigt am 2026-08-02:** der hier vorgeschlagene Toggle für eine
+absichtlich kaputte SUT ist gebaut — als Fehlerinjektion pro System unter
+Test in Schritt 3 der App, zusammen mit der Kill-Matrix. Der metamorphe Test
+kann jetzt sichtbar fehlschlagen, und die Konformitätscheckliste reagiert
+darauf.
+
+Ebenfalls erledigt: die `session_state`-Keys werden beim Wechsel des Use Case
+aufgeräumt (`_prune_rationales` in `app.py`), und `run_relation` kopiert die
+Eingaben statt eine Referenz zu halten.
 
 ## Task 10 (Streamlit Community Cloud Deployment) — erledigt
 

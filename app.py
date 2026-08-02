@@ -1,15 +1,29 @@
-"""Streamlit-UI für den AI Risk Classifier (Portfolio-Demo, MARCO.OS-Stil)."""
-
-import streamlit as st
+"""Streamlit-UI für das AI Act Evidence Toolkit (Portfolio-Demo, MARCO.OS-Stil)."""
 
 import sys
 from pathlib import Path
+
+import streamlit as st
 
 # Das Verzeichnis dieser Datei auf den Importpfad legen, damit portfolio_ui
 # sowohl beim normalen Start (Streamlit legt es selbst dorthin) als auch im
 # Test-Harness (AppTest.from_file laeuft vom Repo-Wurzelverzeichnis) gefunden wird.
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
+from ai_act_toolkit.governance import (
+    EvidenceBundle,
+    EvidenceEntry,
+    generate_governance_artifact,
+    render_kill_matrix,
+)
+from ai_act_toolkit.llm import get_llm
+from ai_act_toolkit.metamorphic.mutation import run_kill_matrix
+from ai_act_toolkit.metamorphic.suite import run_suite
+from ai_act_toolkit.obligations import EvidenceKind, obligations_for
+from ai_act_toolkit.rationale import generate_rationale
+from ai_act_toolkit.risk_engine import Annex3Area, RiskClass, UseCaseAttributes, classify
+from ai_act_toolkit.suts import suts_for
+from ai_act_toolkit.use_cases import ALL_USE_CASES
 from portfolio_ui import (
     example_picker,
     page_header,
@@ -18,17 +32,6 @@ from portfolio_ui import (
     under_the_hood,
 )
 
-from ai_act_toolkit.comfort_system_sut import (
-    TEMPERATURE_MONOTONICITY_RELATION,
-    decide_cooling_intensity,
-)
-from ai_act_toolkit.governance import generate_governance_artifact
-from ai_act_toolkit.llm import get_llm
-from ai_act_toolkit.metamorphic import run_relation
-from ai_act_toolkit.rationale import generate_rationale
-from ai_act_toolkit.risk_engine import Annex3Area, RiskClass, UseCaseAttributes, classify
-from ai_act_toolkit.use_cases import ALL_USE_CASES
-
 RISK_DISPLAY = {
     RiskClass.UNACCEPTABLE: ("🔴 Unzulässig (verbotene Praktik)", st.error),
     RiskClass.HIGH_RISK: ("🟠 Hochrisiko", st.warning),
@@ -36,13 +39,14 @@ RISK_DISPLAY = {
     RiskClass.MINIMAL_RISK: ("🟢 Minimales Risiko", st.success),
 }
 
-page_setup("AI Risk Classifier")
+page_setup("AI Act Evidence Toolkit")
 
 page_header(
-    title="AI Risk Classifier",
+    title="AI Act Evidence Toolkit",
     claim=(
-        "Ordnet eine KI-Anwendung einer EU-AI-Act-Risikoklasse zu und belegt die Methodik "
-        "mit einem live ausgeführten metamorphen Test: die Einstufung trifft ein "
+        "Stuft eine KI-Anwendung nach dem EU AI Act ein, leitet daraus die konkreten "
+        "Artikelpflichten ab und führt für die technisch belegbaren davon einen "
+        "metamorphen Test live aus — die Einstufung selbst trifft ein "
         "deterministischer Regelbaum, nicht das LLM."
     ),
     project_id="ai-act-validation-toolkit",
@@ -58,7 +62,7 @@ EXAMPLES = {
     "Bewerber-Vorauswahl": "Hochrisiko über Annex III",
     "Kundenservice-Chatbot": "nur Transparenzpflicht",
 }
-_EXAMPLE_TO_USE_CASE = dict(zip(EXAMPLES, use_case_titles))
+_EXAMPLE_TO_USE_CASE = dict(zip(EXAMPLES, use_case_titles, strict=True))
 
 picked = example_picker(
     "Beispiel wählen, ganz ohne Eingabe:", EXAMPLES, key="usecase"
@@ -116,6 +120,7 @@ attrs = UseCaseAttributes(
     has_transparency_obligation=has_transparency,
 )
 
+st.subheader("1. Einstufung")
 classification = classify(attrs)
 label, display_fn = RISK_DISPLAY[classification.risk_class]
 display_fn(f"**{label}**, Regel: {classification.matched_rule}")
@@ -127,15 +132,35 @@ display_fn(f"**{label}**, Regel: {classification.matched_rule}")
 # von den rohen Fragebogen-Attributen; dieselbe Klassifizierung liefert also
 # dieselbe gültige Begründung).
 rationale_key = (
-    f"rationale::{use_case.key}::{classification.risk_class.value}::{classification.matched_rule}"
+    f"rationale::{use_case.key}::{classification.risk_class.value}"
+    f"::{classification.matched_rule}"
 )
-metamorphic_key = f"metamorphic_result::{use_case.key}"
+
+
+def _prune_rationales(active_prefix: str) -> None:
+    """Verwirft LLM-Begründungen, die zu einem anderen Use Case gehören.
+
+    Ohne das sammelt der session_state pro (Use Case, Klasse, Regel)-
+    Kombination einen Key an und wird ihn nie wieder los.
+    """
+    stale = [
+        key
+        for key in st.session_state
+        if key.startswith("rationale::") and not key.startswith(active_prefix)
+    ]
+    for key in stale:
+        del st.session_state[key]
+
+
+_prune_rationales(f"rationale::{use_case.key}::")
 
 if st.button("Begründung generieren (LLM)"):
     try:
         llm = get_llm()
         with st.spinner("Begründung wird generiert..."):
-            st.session_state[rationale_key] = generate_rationale(llm, use_case, classification)
+            st.session_state[rationale_key] = generate_rationale(
+                llm, use_case, classification
+            )
     except Exception as e:
         st.error(f"Begründung konnte nicht automatisch generiert werden: {e}")
 
@@ -143,39 +168,97 @@ rationale = st.session_state.get(rationale_key)
 if rationale:
     st.markdown(f"**Begründung:** {rationale}")
 
-metamorphic_result = st.session_state.get(metamorphic_key)
-if use_case.has_metamorphic_demo and classification.risk_class == RiskClass.HIGH_RISK:
-    st.subheader("Metamorpher Test")
-    st.markdown(TEMPERATURE_MONOTONICITY_RELATION.description)
-    if st.button("Metamorphen Test ausführen"):
-        source_inputs = dict(
-            outside_temp_c=20.0, cabin_temp_c=22.0, desired_temp_c=21.0, occupant_count=2
-        )
-        metamorphic_result = run_relation(
-            decide_cooling_intensity, TEMPERATURE_MONOTONICITY_RELATION, source_inputs
-        )
-        st.session_state[metamorphic_key] = metamorphic_result
+obligations = obligations_for(classification)
 
-    if metamorphic_result:
-        status = "✅ BESTANDEN" if metamorphic_result.passed else "❌ FEHLGESCHLAGEN"
-        st.markdown(f"**Ergebnis:** {status}")
+st.subheader("2. Pflichten")
+if not obligations:
+    st.info("Aus dieser Einstufung folgen keine besonderen Pflichten.")
+else:
+    st.markdown(
+        "Diese Pflichten folgen aus der Einstufung. Belegbar sind nur die, "
+        "für die es einen ausführbaren technischen Nachweis gibt:"
+    )
+    _MARKER = {
+        EvidenceKind.TECHNICAL_TEST: "🧪 technisch nachweisbar",
+        EvidenceKind.DOCUMENTATION: "📄 teilweise über die Dokumentation",
+        EvidenceKind.PROCESS: "🏢 Prozesspflicht",
+    }
+    for obligation in obligations:
         st.markdown(
-            f"- Quellfall: {metamorphic_result.source_inputs} → "
-            f"Kühlintensität {metamorphic_result.source_output:.1f}"
-        )
-        st.markdown(
-            f"- Folgefall: {metamorphic_result.followup_inputs} → "
-            f"Kühlintensität {metamorphic_result.followup_output:.1f}"
+            f"- **{obligation.article}** {obligation.title} — "
+            f"{_MARKER[obligation.evidence_kind]}"
         )
 
-if classification.risk_class == RiskClass.HIGH_RISK:
-    st.subheader("Governance-Artefakt")
+specs = suts_for(use_case.key)
+evidence = None
+
+st.subheader("3. Nachweis")
+if not specs:
+    st.info(
+        "Für diesen Use Case ist kein System unter Test hinterlegt — "
+        "es lässt sich hier also kein technischer Nachweis führen."
+    )
+else:
+    st.markdown(
+        "Der AI Act verlangt den Nachweis, sagt aber nicht wie. Bei einem "
+        "KI-System scheitert der naive Weg am Orakel-Problem: die richtige "
+        "Ausgabe ist unbekannt. Metamorphes Testen prüft deshalb keine "
+        "einzelne Ausgabe, sondern eine **Beziehung** zwischen zwei Ausgaben."
+    )
+    entries = []
+    for spec in specs:
+        st.markdown(f"#### {spec.label}")
+        st.caption(spec.description)
+
+        fault_options = ["(keiner)"] + [m.label for m in spec.mutants]
+        fault_label = st.selectbox(
+            "Fehler injizieren",
+            fault_options,
+            key=f"fault::{use_case.key}::{spec.key}",
+        )
+        active_fn = spec.fn
+        if fault_label != "(keiner)":
+            mutant = next(m for m in spec.mutants if m.label == fault_label)
+            active_fn = mutant.fn
+            st.caption(f"Eingebauter Defekt: {mutant.defect}")
+
+        suite_result = run_suite(active_fn, spec.relations, spec.baseline_inputs)
+        for result in suite_result.results:
+            status = "✅ bestanden" if result.passed else "❌ FEHLGESCHLAGEN"
+            with st.expander(
+                f"{status} — {result.relation.name} ({result.relation.evidence_for})",
+                expanded=not result.passed,
+            ):
+                st.markdown(result.relation.description)
+                st.markdown(
+                    f"- Quellfall: `{result.source_inputs}` → "
+                    f"**{result.source_output:.2f}**"
+                )
+                st.markdown(
+                    f"- Folgefall: `{result.followup_inputs}` → "
+                    f"**{result.followup_output:.2f}**"
+                )
+
+        matrix = run_kill_matrix(spec.relations, spec.mutants, spec.baseline_inputs)
+        killed, total = matrix.score
+        st.markdown(
+            f"**Kill-Matrix** — wie gut fängt diese Relationsmenge eingebaute "
+            f"Fehler? Mutation Score **{killed}/{total}**."
+        )
+        st.markdown(render_kill_matrix(matrix))
+
+        entries.append(EvidenceEntry(spec.label, suite_result, matrix))
+
+    evidence = EvidenceBundle(entries=tuple(entries))
+
+if obligations:
+    st.subheader("4. Artefakt")
     artifact_rationale = rationale or (
         f"Automatische Begründung nicht verfügbar. "
         f"Klassifizierungsregel: {classification.matched_rule}"
     )
     artifact = generate_governance_artifact(
-        use_case, classification, artifact_rationale, metamorphic_result
+        use_case, classification, artifact_rationale, obligations, evidence
     )
     st.markdown(artifact)
     st.download_button(
@@ -217,8 +300,8 @@ with under_the_hood():
     st.caption(f"Getroffene Regel: {classification.matched_rule}")
     st.markdown(
         "Das LLM formuliert ausschließlich die Begründung in Prosa und kann die "
-        "Klasse nicht mehr verändern. Fällt es aus, bleibt das Governance-Artefakt "
-        "trotzdem verfügbar."
+        "Klasse nicht mehr verändern. Der Nachweis in Schritt 3 läuft vollständig "
+        "ohne LLM: Relationen und Mutanten sind Code, keine Sprachausgabe."
     )
 
 portfolio_footer(
@@ -227,7 +310,7 @@ portfolio_footer(
     caveats=[
         "keine rechtsverbindliche Compliance-Aussage",
         "drei hinterlegte Use Cases, kein Freitext-Import",
-        "eine metamorphe Relation, nicht die volle Methodik der Promotion",
+        "belegt 2 von 7 Hochrisiko-Pflichten technisch, der Rest sind Prozesspflichten",
         "Free-Tier-Hosting, der erste Aufruf kann einen Kaltstart haben",
     ],
 )

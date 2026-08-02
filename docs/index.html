@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>AI Act Validation Toolkit — Marco Stang</title>
-<meta name="description" content="EU-AI-Act-Risikoklassifizierung + metamorphe Validierung — eine anwendbare Miniatur von Marco Stangs Promotionsthema.">
+<title>AI Act Evidence Toolkit — Marco Stang</title>
+<meta name="description" content="Vom EU-AI-Act-Pflichtenkatalog zum ausgeführten technischen Nachweis — metamorphes Testen mit Fehlerinjektion und Kill-Matrix.">
 <style>
   :root {
     --bg: #f7f7f5;
@@ -303,12 +303,14 @@
 <header class="hero">
   <div class="wrap">
     <span class="eyebrow">Portfolio-Projekt · EU AI Act</span>
-    <h1>Ist dein KI-System ein Hochrisiko-System? Und kannst du das beweisen?</h1>
+    <h1>Du bist Hochrisiko. Womit belegst du das technisch?</h1>
     <p class="lede">
-      Ein Tool, das einen KI-Use-Case deterministisch nach EU-AI-Act-Risikoklasse
-      einordnet — und die Klassifizierung an einem echten, live ausgeführten
-      metamorphen Test verifiziert, statt sie nur zu behaupten. Eine anwendbare
-      Miniatur von Marco Stangs Promotionsthema zur Validierung von KI-Systemen.
+      Die Einstufung nach EU AI Act ist der leichte Teil. Dieses Tool geht weiter:
+      aus der Risikoklasse folgen konkrete Artikelpflichten, und für die technisch
+      belegbaren führt es einen metamorphen Test live aus — inklusive injizierbarer
+      Fehler und einer Kill-Matrix, die zeigt, wie gut die Relationsmenge wirklich
+      ist. Eine anwendbare Miniatur von Marco Stangs Promotionsthema zur
+      Validierung von KI-Systemen.
     </p>
     <div class="cta-row">
       <a class="btn btn-primary" href="https://ai-act-validation-toolkit.streamlit.app/">Live-Demo öffnen</a>
@@ -467,12 +469,13 @@
 
     <div class="file-list">
 <div><span class="path">src/ai_act_toolkit/risk_engine.py</span>       <span class="desc"># deterministischer Annex-III-Regelbaum</span></div>
+<div><span class="path">src/ai_act_toolkit/obligations.py</span>       <span class="desc"># Risikoklasse -&gt; Artikelpflichten</span></div>
 <div><span class="path">src/ai_act_toolkit/use_cases.py</span>         <span class="desc"># 3 Beispiel-Use-Cases</span></div>
-<div><span class="path">src/ai_act_toolkit/comfort_system_sut.py</span> <span class="desc"># Toy-Komfortsystem + Monotonie-Relation</span></div>
-<div><span class="path">src/ai_act_toolkit/metamorphic.py</span>       <span class="desc"># generischer metamorpher Test-Runner</span></div>
-<div><span class="path">src/ai_act_toolkit/governance.py</span>       <span class="desc"># Governance-Artefakt-Generator</span></div>
+<div><span class="path">src/ai_act_toolkit/metamorphic/</span>        <span class="desc"># Relation, Suite, Mutation und Kill-Matrix</span></div>
+<div><span class="path">src/ai_act_toolkit/suts/</span>               <span class="desc"># 3 Systeme unter Test + Mutanten</span></div>
+<div><span class="path">src/ai_act_toolkit/governance.py</span>       <span class="desc"># Artefakt: hakt nur Belegtes ab</span></div>
 <div><span class="path">src/ai_act_toolkit/llm.py + rationale.py</span> <span class="desc"># LLM-Begründungstext</span></div>
-<div><span class="path">app.py</span>                                <span class="desc"># Streamlit-UI</span></div>
+<div><span class="path">app.py</span>                                <span class="desc"># Streamlit-UI in vier Schritten</span></div>
     </div>
 
     <div style="height: 24px;"></div>
@@ -523,7 +526,10 @@
     <ul class="limits">
       <li>Keine rechtsverbindliche Compliance-Aussage, kein Ersatz für juristische Beratung oder ein echtes Konformitätsbewertungsverfahren.</li>
       <li>Nur 3 fest hinterlegte Beispiel-Use-Cases, kein Freitext-Import.</li>
-      <li>Ein metamorpher Test (Monotonie-Relation), nicht die volle Szenario-Verknüpfungsmethodik der Promotion.</li>
+      <li>Belegt 2 der 7 Hochrisiko-Pflichten technisch (Art. 10 und 15), 2 teilweise, 3 gar nicht — das sind Prozesspflichten.</li>
+      <li>Die Systeme unter Test sind deterministische Stellvertreter-Modelle, keine echten ML-Modelle.</li>
+      <li>Die Relationen laufen gegen einen festen Quellfall, nicht gegen einen gesuchten Szenarienraum — das wäre die volle Verknüpfungsmethodik der Promotion.</li>
+      <li>Mutation Score 11/14: jede SUT hat einen deklarierten überlebenden Mutanten (Rundung) als bekannte Blindstelle.</li>
     </ul>
   </div>
 </section>

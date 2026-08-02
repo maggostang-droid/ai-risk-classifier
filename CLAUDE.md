@@ -1,15 +1,26 @@
-# ai-act-validation-toolkit — Projektkontext
+# AI Act Evidence Toolkit — Projektkontext
 
-Design-Spec: `docs/superpowers/specs/2026-07-28-ai-act-validation-toolkit-design.md`
-Implementierungsplan: `docs/superpowers/plans/2026-07-28-ai-act-validation-toolkit-implementation.md`
+Ursprüngliche Spec: `docs/superpowers/specs/2026-07-28-ai-act-validation-toolkit-design.md`
+**Aktuelle Spec:** `docs/superpowers/specs/2026-08-02-evidence-toolkit-design.md`
+**Aktueller Plan:** `docs/superpowers/plans/2026-08-02-evidence-toolkit-implementation.md`
+
+Repo-Slug bleibt `ai-risk-classifier`, Python-Paket bleibt `ai_act_toolkit`,
+MARCO.OS-Projekt-`id` bleibt `ai-act-validation-toolkit` — nur der
+Produktname wurde am 2026-08-02 zu „AI Act Evidence Toolkit" geändert. Nicht
+umbenennen, sonst brechen Streamlit-Deployment und Deep-Links.
 
 ## Was das hier ist
 
 Portfolio-Projekt von Marco Stang für Bewerbungen auf AI/KI-Rollen (ggf.
 auch KI-Transformations-Rollen). Miniatur-Version seines Promotionsthemas
 (Validierung von KI-Systemen durch Verknüpfung von Szenarien und
-metamorphes Testen) als EU-AI-Act-Risikoklassifizierungs- und
-Governance-Tool. Zeitbudget 3-4 Tage.
+metamorphes Testen).
+
+Die Leitfrage ist bewusst nicht „in welche Klasse fällt mein System?", sondern
+„ich bin Hochrisiko — womit belege ich das technisch?". Genau dort hört jedes
+andere AI-Act-Werkzeug auf, und genau das ist der Gegenstand der Promotion.
+Wer hier etwas ändert, sollte diese Kette nicht auftrennen:
+Einstufung → Pflichten → Nachweis → Artefakt.
 
 ## Commands
 
@@ -22,24 +33,48 @@ cp .env.example .env  # LLM_PROVIDER/LLM_MODEL/API-Key eintragen
 .venv/Scripts/python.exe -m streamlit run app.py       # Demo-App
 ```
 
-Kein Linter konfiguriert.
+Linter: `.venv/Scripts/python.exe -m ruff check .` — läuft zusammen mit
+pytest in `.github/workflows/ci.yml` bei jedem Push.
 
 ## Architektur
+
+Die Leitidee: die Einstufung erzeugt Pflichten, die Relations-Suite liefert
+die Evidenz dafür, das Artefakt hakt genau das ab, was belegt wurde.
 
 - `src/ai_act_toolkit/risk_engine.py` — deterministischer Regelbaum:
   Art. 5 (verboten) → Art. 6(1) (Sicherheitsbauteil) → Art. 6(2)+Annex III
   (Hochrisiko-Bereich mit Art.-6(3)-Ausnahme) → Art. 50 (Transparenzpflicht)
   → minimal
-- `src/ai_act_toolkit/use_cases.py` — Komfortsystem (high-risk, mit
-  metamorphem Test), Recruiting (high-risk), Chatbot (limited-risk)
-- `src/ai_act_toolkit/comfort_system_sut.py` — Toy-SUT + Temperatur-Monotonie-Relation
-- `src/ai_act_toolkit/metamorphic.py` — generischer `run_relation()`-Runner
-- `src/ai_act_toolkit/governance.py` — Markdown-Governance-Artefakt (Art. 9-15-Checkliste)
+- `src/ai_act_toolkit/obligations.py` — Risikoklasse → Artikelpflichten, jede
+  mit `EvidenceKind` (TECHNICAL_TEST / DOCUMENTATION / PROCESS). Das
+  Bindeglied zwischen Einstufung und Nachweis.
+- `src/ai_act_toolkit/use_cases.py` — Komfortsystem, Recruiting, Chatbot.
+  Reine Falldaten, kennt die SUTs nicht.
+- `src/ai_act_toolkit/metamorphic/` — `core.py` (Relation mit `evidence_for`,
+  `run_relation`), `suite.py` (alle Relationen einer SUT, `by_article()`),
+  `mutation.py` (`Mutant`, `KillMatrix`, Mutation Score)
+- `src/ai_act_toolkit/suts/` — `comfort_seat.py` (sicherheitsrelevant, Art. 6(1)),
+  `comfort_climate.py`, `recruiting_scorer.py` (naiv/gefixt, Namensinvarianz),
+  `__init__.py` mit `SUTSpec` und der Registry Use-Case → SUTs
+- `src/ai_act_toolkit/governance.py` — Markdown-Artefakt, Checkliste in drei
+  Zuständen: `[x]` belegt, `[~]` teilweise, `[ ]` offen/Prozesspflicht
 - `src/ai_act_toolkit/llm.py` / `rationale.py` — provider-agnostische
   LLM-Anbindung (Muster aus `sql-agent`), generiert nur den Begründungstext
-- `app.py` — Streamlit-UI: Use-Case-Auswahl → editierbarer Fragebogen →
-  Ampel-Klassifizierung → Begründung (LLM) → metamorpher Test
-  (Komfortsystem) → Governance-Artefakt (high-risk)
+- `app.py` — Streamlit-UI in vier Schritten: 1. Einstufung → 2. Pflichten →
+  3. Nachweis (mit Fehlerinjektion und Kill-Matrix) → 4. Artefakt
+
+### Zwei Fallen in diesem Code
+
+**Strenge vs. nicht-strenge Monotonie.** Relationen wie die Körpergrößen-
+Monotonie prüfen `>` und nicht `>=`. Grund: mit `>=` würde eine komplett
+ignorierte Eingangsgröße die Relation anstandslos bestehen. Wer eine solche
+Relation lockert, macht sie blind für den entsprechenden Mutanten — und der
+zugehörige Kill-Matrix-Test wird rot.
+
+**Baselinepunkte dürfen nicht im Sättigungsbereich liegen.** Das Basisprofil
+des Scorers steht auf `education_level=4`, nicht 3: bei 3 wird die
+Vorzeichenfehler-Variante von der unteren Clip-Grenze auf 0 gehalten, Quell-
+und Folgefall sind beide 0, und die Skill-Monotonie sieht den Defekt nicht.
 
 ## Wie hier gearbeitet wird
 
@@ -48,43 +83,28 @@ aktiv mit, Konzepte erklären statt vorlösen, alle Doku auf Deutsch.
 
 ## Aktueller Stand
 
-*Diesen Abschnitt aktuell halten, sobald ein Task aus dem
-Implementierungsplan abgeschlossen ist.*
+**Stand 2026-08-02: Umbau zum Evidence Toolkit abgeschlossen** (Branch
+`feature/evidence-toolkit`, 12 Tasks nach
+`docs/superpowers/plans/2026-08-02-evidence-toolkit-implementation.md`).
 
-Alle 8 Implementierungs-Tasks sind fertig implementiert und einzeln
-reviewed:
+- 74 Tests grün, ruff sauber, CI-Workflow angelegt.
+- Metamorphes Testen ist der Kern statt eines Nebenfeatures: drei Systeme
+  unter Test, elf Relationen, vierzehn Mutanten, Gesamt-Mutation-Score 11/14.
+- Das Governance-Artefakt hakt nur ab, was tatsächlich belegt wurde.
+- Fehlerinjektion in der UI: der metamorphe Test kann sichtbar fehlschlagen.
+  Das war seit dem 2026-07-28 als verpasster Beweismoment vermerkt.
 
-- ✅ Task 1: Projekt-Grundgerüst (pyproject, package skeleton, smoke test)
-- ✅ Task 2: `risk_engine.py` (deterministischer Annex-III-Regelbaum)
-- ✅ Task 3: `use_cases.py` (3 Beispiel-Use-Cases)
-- ✅ Task 4: `metamorphic.py` + `comfort_system_sut.py` (metamorpher Test-Runner)
-- ✅ Task 5: `governance.py` (Governance-Artefakt-Generator)
-- ✅ Task 6: `llm.py` + `rationale.py` (LLM-Anbindung)
-- ✅ Task 7: `app.py` (Streamlit-UI)
-- ✅ Task 8: README + CLAUDE.md
+Vorher (2026-07-28): Erstbau nach
+`docs/superpowers/plans/2026-07-28-ai-act-validation-toolkit-implementation.md`,
+10 Tasks, deployed auf Streamlit Community Cloud unter
+https://ai-act-validation-toolkit.streamlit.app/ (Marco hat die Secrets
+selbst gesetzt).
 
-Die finale Whole-Branch-Review wurde durchgeführt, gefundene Findings sind
-gefixt (siehe `.superpowers/sdd/2026-07-28-ai-act-validation-toolkit-implementation/final-review-fix-report.md`).
+Noch offen:
 
-- ✅ GitHub-Repo angelegt und gepusht:
-  https://github.com/maggostang-droid/ai-act-validation-toolkit (public,
-  Branch `master`).
-- ✅ GitHub-Pages-Projektseite live:
-  https://maggostang-droid.github.io/ai-act-validation-toolkit/
-- ✅ Task 10 abgeschlossen: Streamlit-Community-Cloud-Deployment live unter
-  https://ai-act-validation-toolkit.streamlit.app/ (Marco hat Secrets
-  selbst gesetzt, App von ihm als erreichbar bestätigt — damit auch der
-  erste echte Testlauf mit echtem LLM-API-Key erfolgt).
-
-Alle 10 Plan-Tasks sind damit abgeschlossen. Projekt ist "fertig" im
-Sinne des Backlogs (`../PORTFOLIO_BACKLOG.md`, Status entsprechend
-aktualisieren, falls noch nicht geschehen).
-
-Noch offen (kein Implementierungs-Task):
-
-- ⬜ Manuelle Browser-Verifikation der App durch eine Agenten-Session war
-  nie möglich (kein Browser-Zugriff) — bisher nur automatisiert via
-  `streamlit.testing.v1.AppTest` geprüft. Marco hat die Live-App laut
-  eigener Aussage erreichbar bestätigt, ein detailliertes Durchklicken
-  aller 3 Use-Cases in der Live-Version steht seitens einer Agenten-Session
-  weiterhin aus.
+- ⬜ Demo-GIF vom Namenstausch aufnehmen und `docs/demo.png` im README
+  ersetzen — braucht Marco selbst, eine Agenten-Session kann es nicht
+  erzeugen.
+- ⬜ Nach dem Merge prüfen, ob die Streamlit-App den neuen Stand zieht.
+- ⬜ `docs/architecture.svg` zeigt noch die alte Struktur ohne den
+  Pflichten-Schritt.
