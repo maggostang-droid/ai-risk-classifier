@@ -1,4 +1,4 @@
-"""Streamlit-UI für den AI Risk Classifier (Portfolio-Demo, MARCO.OS-Stil)."""
+"""Streamlit-UI für das AI Act Evidence Toolkit (Portfolio-Demo, MARCO.OS-Stil)."""
 
 import sys
 from pathlib import Path
@@ -39,13 +39,14 @@ RISK_DISPLAY = {
     RiskClass.MINIMAL_RISK: ("🟢 Minimales Risiko", st.success),
 }
 
-page_setup("AI Risk Classifier")
+page_setup("AI Act Evidence Toolkit")
 
 page_header(
-    title="AI Risk Classifier",
+    title="AI Act Evidence Toolkit",
     claim=(
-        "Ordnet eine KI-Anwendung einer EU-AI-Act-Risikoklasse zu und belegt die Methodik "
-        "mit einem live ausgeführten metamorphen Test: die Einstufung trifft ein "
+        "Stuft eine KI-Anwendung nach dem EU AI Act ein, leitet daraus die konkreten "
+        "Artikelpflichten ab und führt für die technisch belegbaren davon einen "
+        "metamorphen Test live aus — die Einstufung selbst trifft ein "
         "deterministischer Regelbaum, nicht das LLM."
     ),
     project_id="ai-act-validation-toolkit",
