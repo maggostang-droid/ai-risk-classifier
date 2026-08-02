@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 940 286"
+     width="940" height="286" role="img" aria-label="Fragebogen geht in den deterministischen Regelbaum, daraus folgen Risikoklasse, optionale LLM-Begruendung, metamorpher Test und Governance-Artefakt">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7"
+            orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#a78bfa"/>
+    </marker>
+  </defs>
+  <rect x="0.5" y="0.5" width="939" height="285" rx="14"
+        fill="#0a0716" stroke="#fbbf24" stroke-width="1" opacity="1"/>
+  <rect x="0.5" y="0.5" width="939" height="36" rx="14" fill="#140f24"/>
+  <rect x="0.5" y="22" width="939" height="14" fill="#140f24"/>
+  <line x1="0.5" y1="36" x2="939.5" y2="36" stroke="#fbbf24" stroke-width="1" opacity="0.45"/>
+  <circle cx="20" cy="18" r="5" fill="#ff5f57"/>
+  <circle cx="38" cy="18" r="5" fill="#febc2e"/>
+  <circle cx="56" cy="18" r="5" fill="#28c840"/>
+  <text x="76" y="23" fill="#c9c5e8" font-family="JetBrains Mono, SFMono-Regular, Consolas, monospace" font-size="12"
+        opacity="0.9">app://ai-act-validation-toolkit · architecture</text>
+
+  <path d="M 220 145 L 262 145" fill="none" stroke="#a78bfa" stroke-width="1.8"
+        marker-end="url(#arrow)" opacity="0.9"/>
+  
+  <path d="M 462 145 L 504 145" fill="none" stroke="#a78bfa" stroke-width="1.8"
+        marker-end="url(#arrow)" opacity="0.9"/>
+  
+  <path d="M 664 116.72413793103448 L 739.609756097561 90" fill="none" stroke="#a78bfa" stroke-width="1.8" stroke-dasharray="6 5"
+        marker-end="url(#arrow)" opacity="0.9"/>
+  
+  <path d="M 664 145 L 726 145" fill="none" stroke="#a78bfa" stroke-width="1.8" stroke-dasharray="6 5"
+        marker-end="url(#arrow)" opacity="0.9"/>
+  
+  <path d="M 664 173.27586206896552 L 739.609756097561 200" fill="none" stroke="#a78bfa" stroke-width="1.8"
+        marker-end="url(#arrow)" opacity="0.9"/>
+  
+
+  <g>
+    <rect x="30" y="116" width="190" height="58" rx="10"
+          fill="#140f24" stroke="#06040d" stroke-width="3"/>
+    <rect x="30" y="116" width="190" height="58" rx="10"
+          fill="none" stroke="#fbbf24" stroke-width="1.5" opacity="0.85"/>
+    <text x="125" y="142" fill="#e7e4f5" font-family="JetBrains Mono, SFMono-Regular, Consolas, monospace"
+          font-size="14" font-weight="600" text-anchor="middle">Use Case</text>
+    <text x="125" y="160" fill="#c9c5e8" font-family="JetBrains Mono, SFMono-Regular, Consolas, monospace" font-size="11" text-anchor="middle" opacity="0.85">+ Fragebogen</text>
+  </g>
+  <g>
+    <rect x="262" y="116" width="200" height="58" rx="10"
+          fill="#fbbf24" stroke="#06040d" stroke-width="3"/>
+    <rect x="262" y="116" width="200" height="58" rx="10"
+          fill="none" stroke="#06040d" stroke-width="1.5" opacity="1"/>
+    <text x="362" y="142" fill="#06040d" font-family="JetBrains Mono, SFMono-Regular, Consolas, monospace"
+          font-size="14" font-weight="600" text-anchor="middle">risk_engine.py</text>
+    <text x="362" y="160" fill="#06040d" font-family="JetBrains Mono, SFMono-Regular, Consolas, monospace" font-size="11" text-anchor="middle" opacity="0.85">Regelbaum, kein LLM</text>
+  </g>
+  <g>
+    <rect x="504" y="116" width="160" height="58" rx="10"
+          fill="#140f24" stroke="#06040d" stroke-width="3"/>
+    <rect x="504" y="116" width="160" height="58" rx="10"
+          fill="none" stroke="#fbbf24" stroke-width="1.5" opacity="0.85"/>
+    <text x="584" y="142" fill="#e7e4f5" font-family="JetBrains Mono, SFMono-Regular, Consolas, monospace"
+          font-size="14" font-weight="600" text-anchor="middle">Risikoklasse</text>
+    <text x="584" y="160" fill="#c9c5e8" font-family="JetBrains Mono, SFMono-Regular, Consolas, monospace" font-size="11" text-anchor="middle" opacity="0.85">Ampel + Regel</text>
+  </g>
+  <g>
+    <rect x="726" y="36" width="180" height="54" rx="10"
+          fill="#140f24" stroke="#06040d" stroke-width="3"/>
+    <rect x="726" y="36" width="180" height="54" rx="10"
+          fill="none" stroke="#fbbf24" stroke-width="1.5" opacity="0.85"/>
+    <text x="816" y="60" fill="#e7e4f5" font-family="JetBrains Mono, SFMono-Regular, Consolas, monospace"
+          font-size="14" font-weight="600" text-anchor="middle">rationale.py</text>
+    <text x="816" y="78" fill="#c9c5e8" font-family="JetBrains Mono, SFMono-Regular, Consolas, monospace" font-size="11" text-anchor="middle" opacity="0.85">LLM formuliert nur</text>
+  </g>
+  <g>
+    <rect x="726" y="118" width="180" height="54" rx="10"
+          fill="#140f24" stroke="#06040d" stroke-width="3"/>
+    <rect x="726" y="118" width="180" height="54" rx="10"
+          fill="none" stroke="#fbbf24" stroke-width="1.5" opacity="0.85"/>
+    <text x="816" y="142" fill="#e7e4f5" font-family="JetBrains Mono, SFMono-Regular, Consolas, monospace"
+          font-size="14" font-weight="600" text-anchor="middle">metamorphic.py</text>
+    <text x="816" y="160" fill="#c9c5e8" font-family="JetBrains Mono, SFMono-Regular, Consolas, monospace" font-size="11" text-anchor="middle" opacity="0.85">Test laeuft echt</text>
+  </g>
+  <g>
+    <rect x="726" y="200" width="180" height="54" rx="10"
+          fill="#140f24" stroke="#06040d" stroke-width="3"/>
+    <rect x="726" y="200" width="180" height="54" rx="10"
+          fill="none" stroke="#fbbf24" stroke-width="1.5" opacity="0.85"/>
+    <text x="816" y="224" fill="#e7e4f5" font-family="JetBrains Mono, SFMono-Regular, Consolas, monospace"
+          font-size="14" font-weight="600" text-anchor="middle">governance.py</text>
+    <text x="816" y="242" fill="#c9c5e8" font-family="JetBrains Mono, SFMono-Regular, Consolas, monospace" font-size="11" text-anchor="middle" opacity="0.85">Artefakt als Markdown</text>
+  </g>
+</svg>

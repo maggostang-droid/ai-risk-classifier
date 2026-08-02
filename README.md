@@ -1,182 +1,133 @@
 # AI Risk Classifier
 
-Portfolio-Projekt von Marco Stang für Bewerbungen auf AI/KI-Rollen (ggf.
-auch KI-Transformations-Rollen).
+**Ordnet eine KI-Anwendung einer EU-AI-Act-Risikoklasse zu und belegt die Methodik mit
+einem live ausgeführten metamorphen Test: die Klassifizierung trifft ein
+deterministischer Regelbaum, nicht das LLM.**
 
-<!-- TODO(Marco): Screenshot der Demo hier einfügen:
-     ![AI Risk Classifier — Ampel-Klassifizierung mit Fragebogen](docs/demo.png) -->
+![Python](https://img.shields.io/badge/Python-3.10+-fbbf24?style=flat-square&labelColor=0a0716)
+![EU AI Act](https://img.shields.io/badge/EU_AI_Act-Annex_III-fbbf24?style=flat-square&labelColor=0a0716)
+![Tests](https://img.shields.io/badge/Tests-17_passing-fbbf24?style=flat-square&labelColor=0a0716)
+[![Live-Demo](https://img.shields.io/badge/▶_Live--Demo-Streamlit-0a0716?style=flat-square&labelColor=fbbf24)](https://ai-act-validation-toolkit.streamlit.app/)
 
-🔗 **[Projektseite](https://maggostang-droid.github.io/ai-risk-classifier/)**
-— Überblick, Architektur, Motivation (kein Ersatz für die Live-Demo, siehe
-unten).
+> **▶ [Demo ausprobieren](https://ai-act-validation-toolkit.streamlit.app/)**
+> Wähle das Fahrzeug-Komfortsystem, deaktiviere im Fragebogen das Kriterium
+> „Sicherheitsbauteil" und beobachte, wie die Ampel live von Hochrisiko auf minimales
+> Risiko fällt. Danach den metamorphen Test starten.
+> *Streamlit Free Tier: der erste Aufruf kann ein paar Sekunden zum Aufwachen brauchen.*
+
+<!-- TODO(Marco): Screenshot einfuegen, dann diese Zeile durch das Bild ersetzen:
+     ![AI Risk Classifier: Ampel-Klassifizierung mit editierbarem Fragebogen](docs/demo.png) -->
+
+<details>
+<summary><b>🇬🇧 English summary</b></summary>
+
+A tool that classifies a described AI use case into an EU AI Act risk class. The
+classification itself is a deterministic rule tree (Annex III), an LLM only phrases the
+rationale and cannot influence the outcome. For the automotive use case it runs a real
+metamorphic test (temperature monotonicity relation) against a simulated comfort system,
+and generates a governance artefact for high-risk cases. A miniature of the author's
+doctoral research (KIT/ITIV). Full write-up in German below.
+</details>
+
+---
 
 ## In 30 Sekunden
 
-Dieses Tool sagt dir, ob dein KI-System nach dem EU AI Act als "Hochrisiko"
-gilt — und beweist das an einem live ausgeführten Test, statt nur zu
-behaupten. Ab dem 2. August 2026 gilt die Enforcement-Pflicht für
-High-Risk-Systeme nach dem EU AI Act.
+Seit dem 2. August 2026 gilt die Enforcement-Pflicht für Hochrisiko-Systeme nach dem EU AI
+Act. Dieses Tool sagt dir, ob dein KI-System darunter fällt, und beweist seine Methodik an
+einem live ausgeführten Test statt sie nur zu behaupten.
 
-Es ist eine anwendbare Miniatur-Version von Marcos Promotionsthema
-(Dr.-Ing., "Sehr gut", KIT/ITIV, 2019–2025): "Validierung von KI-Systemen
-durch Verknüpfung von Szenarien und metamorphes Testen", erprobt in einer
-Industriekooperation mit Mercedes-Benz zu autonomen
-Fahrzeug-Komfortsystemen. Kein anderes Portfolio-Projekt kombiniert eine
-einschlägige Promotion mit einem akut zeitrelevanten
-Governance-/Compliance-Use-Case — das ist der Grund, warum dieses Projekt
-zuerst gebaut wurde.
+Es ist die anwendbare Miniatur-Version von Marcos Promotionsthema (Dr.-Ing., „Sehr gut",
+KIT/ITIV, 2019 bis 2025): „Validierung von KI-Systemen durch Verknüpfung von Szenarien und
+metamorphes Testen", erprobt in einer Industriekooperation mit Mercedes-Benz zu autonomen
+Fahrzeug-Komfortsystemen.
 
-## Live-Demo
+## Die zentrale Entscheidung: das LLM darf nicht klassifizieren
 
-👉 **[ai-act-validation-toolkit.streamlit.app](https://ai-act-validation-toolkit.streamlit.app/)**
+Bei einem Compliance-Werkzeug ist Nachvollziehbarkeit wichtiger als Sprachgewandtheit. Ein
+LLM, das die Risikoklasse selbst bestimmt, wäre bei identischer Eingabe nicht garantiert
+reproduzierbar, und genau das ist bei einer Rechtsfrage untragbar. Deshalb steht die Klasse
+fest, *bevor* ein LLM überhaupt aufgerufen wird: `risk_engine.py` hat keinerlei
+LLM-Abhängigkeit, die Regel-Priorität ist Art. 5 (verboten), dann Art. 6(1)
+(Sicherheitsbauteil), dann Art. 6(2) mit Annex III inklusive der Art.-6(3)-Ausnahme, dann
+Art. 50 (Transparenz), sonst minimal.
 
-(Streamlit Community Cloud — Free-Tier-Apps schlafen nach Inaktivität ein,
-der erste Aufruf kann ein paar Sekunden zum Aufwachen brauchen.)
+Das LLM bekommt das fertige Ergebnis nur zur Übersetzung in Prosa gereicht. Fällt es aus,
+weil das Netzwerk weg ist, der Key ungültig oder das Rate-Limit erreicht, zeigt die App
+einen Hinweis statt eines Absturzes und erzeugt das Governance-Artefakt trotzdem, mit
+einem Fallback-Text aus der deterministischen Regel.
 
-## Was das Tool macht
+<details>
+<summary><b>▸ Deep Dive: der metamorphe Test und warum er die eigentliche Demo ist</b></summary>
 
-1. **Klassifizieren.** Ordnet einen beschriebenen KI-Use-Case per
-   deterministischem Regelbaum einer EU-AI-Act-Risikoklasse zu (Annex
-   III) — editierbarer Fragebogen, keine Blackbox-Klassifizierung. Ändert
-   man ein Attribut, wird sofort neu klassifiziert.
-2. **Begründen.** Lässt ein LLM nur die Begründung in Klartext
-   formulieren, nicht die Klassifizierung selbst — die Risikoklasse steht
-   bereits fest, bevor das LLM überhaupt aufgerufen wird.
-3. **Verifizieren.** Führt für den Automotive-Use-Case einen echten
-   metamorphen Test aus (Temperatur-Monotonie-Relation) gegen ein
-   simuliertes Komfortsystem — mit echten Zahlen, nicht nur behauptet.
-4. **Dokumentieren.** Generiert für Hochrisiko-Fälle ein
-   Governance-Artefakt (Risk Assessment + Konformitätscheckliste nach
-   Art. 9–15) als Markdown, in-App lesbar und als Download.
+Bei KI-Systemen gibt es das Orakel-Problem: Für eine einzelne Ausgabe ist oft unbekannt,
+was „richtig" gewesen wäre. Metamorphes Testen umgeht das, indem es nicht eine Ausgabe
+prüft, sondern eine *Beziehung* zwischen zwei Ausgaben. Hier: Steigt die Außentemperatur
+bei sonst gleichen Bedingungen, darf die Ziel-Kühlintensität des simulierten
+Komfortsystems nicht sinken. Das ist exakt das Prinzip aus der Promotion, reduziert auf
+einen konkret ausführbaren Fall.
 
-## Beispiel-Use-Cases
+Der aussagekräftigste Test ist `test_broken_sut_fails_relation` in
+`tests/test_metamorphic.py`: Eine absichtlich falsch konstruierte Systemfunktion wird gegen
+dieselbe Relation geprüft und *muss* durchfallen. Ohne diesen Test wäre ein „BESTANDEN"
+wertlos, denn er beweist, dass der Runner echte Verletzungen erkennt und nicht einfach
+immer grün zeigt.
 
-Drei fest hinterlegte Beispiele zeigen die Bandbreite der Risikoklassen
-(Details/Rechtsgrundlagen: [`docs/annex3-mapping.md`](docs/annex3-mapping.md)):
-
-| Use Case | Risikoklasse | Regel | Metamorpher Test |
-|---|---|---|---|
-| Autonomes Fahrzeug-Komfortsystem | 🟠 Hochrisiko | Art. 6(1) — Sicherheitsbauteil eines regulierten Produkts | ✅ ausgeführt |
-| KI-gestützte Bewerber-Vorauswahl | 🟠 Hochrisiko | Art. 6(2) + Annex III (Beschäftigung) | — |
-| Kundenservice-Chatbot | 🔵 Begrenztes Risiko | Art. 50 — Transparenzpflicht | — |
-
-Der Fragebogen ist in der App für jeden Use Case editierbar — man kann
-z.B. beim Komfortsystem das Kriterium "Sicherheitsbauteil" deaktivieren
-und live beobachten, wie die Klasse auf 🟢 Minimales Risiko fällt.
-
-## Wie es funktioniert
-
-```mermaid
-flowchart LR
-    A[Use Case + Fragebogen] --> B[risk_engine.py<br/>deterministischer Regelbaum]
-    B --> C[Ampel: Risikoklasse + Regel]
-    C -.optional.-> D[rationale.py<br/>LLM-Begründung]
-    C -.nur Automotive.-> E[metamorphic.py<br/>Test wird ausgeführt]
-    C --> F[governance.py<br/>Artefakt bei Hochrisiko]
-    D -.-> F
-    E -.-> F
-```
-
-- **Klassifizierung ist deterministisch, nicht das LLM.** `risk_engine.py`
-  hat keinerlei LLM-Abhängigkeit — die Regel-Priorität ist Art. 5
-  (verboten) → Art. 6(1) (Sicherheitsbauteil) → Art. 6(2)+Annex III (mit
-  Art.-6(3)-Ausnahme) → Art. 50 (Transparenz) → minimal. Ein LLM bekommt
-  das fertige Ergebnis nur zur Übersetzung in Prosa gereicht und kann die
-  Klasse nicht mehr beeinflussen.
-- **Der metamorphe Test ist die eigentliche Methodik-Demo.** Statt eine
-  einzelne Ausgabe gegen ein unbekanntes "richtiges" Ergebnis zu prüfen
-  (das Orakel-Problem bei KI-Systemen), prüft er eine *Beziehung*
-  zwischen zwei Ausgaben: steigt die Außentemperatur bei sonst gleichen
-  Bedingungen, darf die Ziel-Kühlintensität des simulierten
-  Komfortsystems nicht sinken. Das ist exakt das Prinzip aus der
-  Promotion, hier auf einen konkret ausführbaren Fall reduziert.
-- **Das Governance-Artefakt bleibt auch ohne LLM verfügbar.** Fällt die
-  LLM-Begründung aus (kein Netzwerk, ungültiger Key, Rate-Limit), zeigt
-  die App einen Fehlerhinweis statt eines Absturzes und generiert das
-  Artefakt trotzdem — mit einem Fallback-Begründungstext basierend auf
-  der deterministischen Regel. Klassifizierung, Konformitätscheckliste
-  und metamorpher Test stammen ohnehin nicht vom LLM.
+Alle 17 Tests laufen ohne Netzwerk und ohne LLM-Zugriff, kein Mock ersetzt echtes
+Verhalten. Die Zuordnung jedes Fragebogen-Kriteriums zur jeweiligen Rechtsgrundlage steht
+in [`docs/annex3-mapping.md`](docs/annex3-mapping.md).
+</details>
 
 ## Architektur
 
-- `src/ai_act_toolkit/risk_engine.py` — deterministischer Annex-III-Regelbaum
-- `src/ai_act_toolkit/use_cases.py` — 3 Beispiel-Use-Cases
-- `src/ai_act_toolkit/comfort_system_sut.py` — Toy-Komfortsystem + Monotonie-Relation
-- `src/ai_act_toolkit/metamorphic.py` — generischer metamorpher Test-Runner
-- `src/ai_act_toolkit/governance.py` — Governance-Artefakt-Generator
-- `src/ai_act_toolkit/llm.py` / `rationale.py` — provider-agnostische
-  LLM-Anbindung (LangChain `init_chat_model`, gesteuert über
-  `LLM_PROVIDER`/`LLM_MODEL`) + Begründungstext
-- `app.py` — Streamlit-UI
+![Fragebogen geht in den deterministischen Regelbaum, daraus folgen Risikoklasse, optionale LLM-Begründung, metamorpher Test und Governance-Artefakt](docs/architecture.svg)
 
-## Tech-Stack
+Bewusst schlank gehalten: kein Frontend-Framework, keine Datenbank, keine Vektor-DB. Die
+Methodik aus Regelbaum und metamorphem Test soll im Vordergrund stehen, nicht die
+Infrastruktur.
 
-| Bereich | Technologie | Zweck |
-|---|---|---|
-| Sprache | Python ≥ 3.10 | gesamtes Package + App |
-| LLM-Anbindung | [LangChain](https://python.langchain.com/) (`init_chat_model`) + `langchain-anthropic` / `langchain-openai` | provider-agnostisch, Wahl über `.env` (`LLM_PROVIDER`/`LLM_MODEL`), kein hartcodiertes Modell |
-| UI | [Streamlit](https://streamlit.io/) | Fragebogen, Ampel-Klassifizierung, metamorpher Test, Governance-Download |
-| Tests | [pytest](https://pytest.org/) | 17 Tests, kein Netzwerk/LLM nötig — inkl. `streamlit.testing.v1.AppTest` zur UI-Verifikation ohne Browser |
-| Konfiguration | [python-dotenv](https://pypi.org/project/python-dotenv/) | `.env`-basierte Secrets, nichts hartcodiert |
-| Packaging | setuptools (src-Layout, editable install) | `pip install -e ".[dev]"` |
-| Demo-Hosting | [Streamlit Community Cloud](https://streamlit.io/cloud) | kostenlose Live-Demo direkt aus dem GitHub-Repo |
-| Projektseiten-Hosting | [GitHub Pages](https://pages.github.com/) | `docs/index.html`, kein externes CDN, self-contained |
+## Was es kann, und was nicht
 
-Kein Frontend-Framework, keine Datenbank, keine Vektor-DB — bewusst
-schlank gehalten, damit die Methodik (Regelbaum + metamorpher Test) im
-Vordergrund steht statt Infrastruktur.
+Drei fest hinterlegte Beispiel-Use-Cases decken die Bandbreite der Risikoklassen ab:
 
-## Quickstart
+| Use Case | Risikoklasse | Regel | Metamorpher Test |
+|---|---|---|---|
+| Autonomes Fahrzeug-Komfortsystem | Hochrisiko | Art. 6(1), Sicherheitsbauteil | ausgeführt |
+| KI-gestützte Bewerber-Vorauswahl | Hochrisiko | Art. 6(2) + Annex III | nein |
+| Kundenservice-Chatbot | Begrenztes Risiko | Art. 50, Transparenzpflicht | nein |
 
-Einmalig: `python -m venv .venv` und
-`.venv/Scripts/python.exe -m pip install -e ".[dev]"`. Danach:
+**17 Tests**, ohne Netzwerk oder LLM lauffähig.
+
+**Was dieses Projekt nicht ist:** Es liefert keine rechtsverbindliche Compliance-Aussage
+und ersetzt weder juristische Beratung noch ein echtes Konformitätsbewertungsverfahren. Es
+kennt nur die drei hinterlegten Use Cases, keinen Freitext-Import. Und es führt genau eine
+metamorphe Relation aus (Monotonie), nicht die volle Szenario-Verknüpfungsmethodik der
+Promotion. Klassische ML-Metriken wie F1 gibt es hier nicht und wären auch sinnlos: Der
+Regelbaum ist deterministisch, seine Korrektheit ist eine Frage der Rechtsauslegung, nicht
+der Statistik.
+
+## Selbst ausprobieren
+
+Einmalig: `python -m venv .venv` und `.venv/Scripts/python.exe -m pip install -e ".[dev]"`.
 
 ```bash
-cp .env.example .env                          # LLM_PROVIDER/LLM_MODEL/API-Key eintragen
-.venv/Scripts/python.exe -m pytest tests/ -v  # 17 Tests, ohne Netzwerk/LLM
+cp .env.example .env                          # LLM_PROVIDER, LLM_MODEL, API-Key eintragen
+.venv/Scripts/python.exe -m pytest tests/ -v  # 17 Tests, ohne Netzwerk
 .venv/Scripts/python.exe -m streamlit run app.py
 ```
 
-## Tests
+---
 
-17 Tests, `pytest tests/ -v` läuft komplett **ohne Netzwerk- oder
-LLM-Zugriff** (die Klassifizierung ist deterministisch, der metamorphe
-Test läuft gegen eine lokale Toy-Funktion). Kein Mock ersetzt echtes
-Verhalten — jeder Test ruft die tatsächliche Logik auf.
+```console
+marco@portfolio:~$ open marco-os --project ai-act-validation-toolkit
+```
 
-Der aussagekräftigste Test ist `test_broken_sut_fails_relation`
-(`tests/test_metamorphic.py`): eine absichtlich falsch konstruierte
-Systemfunktion wird gegen dieselbe Monotonie-Relation getestet und muss
-als *fehlgeschlagen* erkannt werden. Ohne diesen Test wäre ein "BESTANDEN"
-nicht aussagekräftig — er beweist, dass der Runner echte Verletzungen
-erkennt und nicht einfach immer grün anzeigt.
+**[▸ Dieses Projekt in MARCO.OS öffnen](https://maggostang-droid.github.io/marco-os/#ai-act-validation-toolkit)**,
+dem interaktiven Portfolio von Marco Stang.
 
-## Weiterführende Dokumentation
+**Schwesterprojekte:**
+[SQL Copilot](https://github.com/maggostang-droid/sql-copilot) (LangGraph-Agent mit Guardrails) ·
+[Review Risk Predictor](https://github.com/maggostang-droid/review-risk-predictor) (erklärbares ML, React/FastAPI) ·
+[Ask-Marco Assistant](https://github.com/maggostang-droid/ask-marco-assistant) (Chat über alle Projekte)
 
-- [`docs/annex3-mapping.md`](docs/annex3-mapping.md) — jedes
-  Fragebogen-Kriterium der jeweiligen Rechtsgrundlage im EU AI Act
-  zugeordnet
-- [`docs/superpowers/specs/`](docs/superpowers/specs/) — Design-Spec mit
-  allen Architekturentscheidungen
-- [`docs/superpowers/plans/`](docs/superpowers/plans/) — Implementierungsplan
-  (10 Tasks, inkl. vollständigem Code pro Task)
-- [`HANDOVER.md`](HANDOVER.md) — Projektstatus + bekannte offene Punkte,
-  gedacht für den Wiedereinstieg ohne vorherigen Kontext
-
-## Limitierungen
-
-- Keine rechtsverbindliche Compliance-Aussage, kein Ersatz für juristische
-  Beratung oder ein echtes Konformitätsbewertungsverfahren.
-- Nur 3 fest hinterlegte Beispiel-Use-Cases, kein Freitext-Import.
-- Ein metamorpher Test (Monotonie-Relation), nicht die volle
-  Szenario-Verknüpfungsmethodik der Promotion.
-
-## Portfolio-Kontext
-
-Dieses Projekt ist Teil von **[MARCO.OS](https://maggostang-droid.github.io/marco-os/)**,
-dem interaktiven Portfolio von Marco Stang — dort lässt sich diese Demo
-direkt im Projektfenster ausprobieren. Schwesterprojekte:
-
-- [SQL Copilot](https://github.com/maggostang-droid/sql-copilot) — LangGraph-Agent für Text-to-SQL mit Guardrails und Selbstkorrektur
-- [Review Risk Predictor](https://github.com/maggostang-droid/review-risk-predictor) — erklärbare ML-Risikovorhersage (React/FastAPI)
-- [Ask-Marco Assistant](https://github.com/maggostang-droid/ask-marco-assistant) — Chat, der alle Portfolio-Projekte kennt (Context-Stuffing + MCP-Server)
+<sub>Marco Stang · Dr.-Ing. · [LinkedIn](https://www.linkedin.com/in/marco-stang) · stang.marco@t-online.de · MIT-Lizenz</sub>
