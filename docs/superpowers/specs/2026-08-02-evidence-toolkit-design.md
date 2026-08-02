@@ -138,9 +138,16 @@ Je SUT etwa vier Relationen:
 
 | SUT | Relationen |
 |---|---|
-| Sitzverstellung | Monotonie, Permutationsinvarianz (Insassenreihenfolge), Einheiteninvarianz (°C ↔ °F), Sättigungsgrenze |
-| Klima | Monotonie, Einheiteninvarianz, Sättigungsgrenze |
-| Bewerber-Scoring | Namensinvarianz, Monotonie in den Berufsjahren, Skalierungsinvarianz |
+| Sitzverstellung | Geschwindigkeits-Sicherheitsmonotonie, Körpergrößen-Monotonie, Gewichtsunabhängigkeit, Sättigungsgrenze |
+| Klima | Außentemperatur-Monotonie, Kabinen-Monotonie, Sättigungsgrenze |
+| Bewerber-Scoring | Namensinvarianz, Berufsjahre-Monotonie, Skill-Monotonie, Sättigungsgrenze |
+
+Zwei Relationsarten tragen dabei besonders viel: **Unabhängigkeitsrelationen**
+(„Gewicht darf den Lehnenwinkel nicht beeinflussen", „Name darf den Score nicht
+beeinflussen") fangen sachfremde Merkmale, **strenge Monotonie** („größerer Insasse
+muss echt mehr Winkel bekommen") fängt ignorierte Eingangsgrößen. Nicht-strenge
+Monotonie allein würde eine ignorierte Variable durchgehen lassen — ein Detail, das
+sich erst an der Kill-Matrix zeigt.
 
 Jede Relation trägt neu ein Feld `evidence_for` (`"Art. 15"`, `"Art. 10"`). Das ist die
 technische Kopplung zwischen Schritt 3 und Schritt 4.
