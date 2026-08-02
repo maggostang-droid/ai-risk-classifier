@@ -18,7 +18,9 @@ Zwei Ausbaustufen liegen hinter dem Projekt:
 Dieses Dokument hier ist die Entstehungsgeschichte, nicht der Statusbericht.
 
 - Repo: https://github.com/maggostang-droid/ai-risk-classifier (public)
-- Projektseite: https://maggostang-droid.github.io/ai-act-validation-toolkit/
+- Projektseite: https://maggostang-droid.github.io/ai-risk-classifier/
+  (die alte URL mit `ai-act-validation-toolkit` ist tot — GitHub Pages folgt
+  dem Repo-Slug, und das Repo wurde umbenannt)
 - Live-Demo: https://ai-act-validation-toolkit.streamlit.app/
 - Tests: `pytest tests/ -v` → 74 grün, kein Netzwerk/LLM nötig
 

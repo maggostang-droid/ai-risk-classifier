@@ -100,6 +100,24 @@ Vorher (2026-07-28): Erstbau nach
 https://ai-act-validation-toolkit.streamlit.app/ (Marco hat die Secrets
 selbst gesetzt).
 
+### Offen: die Streamlit-Demo hängt auf dem alten Build
+
+Stand 2026-08-02, nach dem Push von `2c43432`: https://ai-act-validation-toolkit.streamlit.app/
+läuft, zeigt aber weiterhin „AI Risk Classifier" mit dem alten Claim. Über
+mehrere Minuten geprüft, kein Kaltstart-Effekt. Die Streamlit Community Cloud
+zieht den neuen Commit nicht — vermutlich, weil die App noch auf den alten
+Repo-Slug `ai-act-validation-toolkit` verweist (GitHub leitet weiter, Streamlit
+folgt dem nicht zwingend).
+
+**Braucht Marcos Login, keine Agenten-Session kann das:** in der Streamlit
+Cloud die App neu starten („Reboot app") und, falls das nicht reicht, die
+Repo-Verknüpfung auf `maggostang-droid/ai-risk-classifier` korrigieren. Die
+Sub-Domain `ai-act-validation-toolkit.streamlit.app` kann dabei bleiben, sie
+ist in README, `docs/index.html` und `../marco-os/data/projects.js` verlinkt.
+
+Die GitHub-Pages-Projektseite hat den Slug-Wechsel dagegen mitgemacht und läuft
+korrekt unter https://maggostang-droid.github.io/ai-risk-classifier/.
+
 ## Doku-Artefakte neu erzeugen
 
 - `docs/demo.gif` — Beweismoment als zwei-Frame-Animation:
