@@ -1,22 +1,14 @@
 """Streamlit-UI für den AI Risk Classifier (Portfolio-Demo, MARCO.OS-Stil)."""
 
-import streamlit as st
-
 import sys
 from pathlib import Path
+
+import streamlit as st
 
 # Das Verzeichnis dieser Datei auf den Importpfad legen, damit portfolio_ui
 # sowohl beim normalen Start (Streamlit legt es selbst dorthin) als auch im
 # Test-Harness (AppTest.from_file laeuft vom Repo-Wurzelverzeichnis) gefunden wird.
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-
-from portfolio_ui import (
-    example_picker,
-    page_header,
-    page_setup,
-    portfolio_footer,
-    under_the_hood,
-)
 
 from ai_act_toolkit.governance import (
     EvidenceBundle,
@@ -32,6 +24,13 @@ from ai_act_toolkit.rationale import generate_rationale
 from ai_act_toolkit.risk_engine import Annex3Area, RiskClass, UseCaseAttributes, classify
 from ai_act_toolkit.suts import suts_for
 from ai_act_toolkit.use_cases import ALL_USE_CASES
+from portfolio_ui import (
+    example_picker,
+    page_header,
+    page_setup,
+    portfolio_footer,
+    under_the_hood,
+)
 
 RISK_DISPLAY = {
     RiskClass.UNACCEPTABLE: ("🔴 Unzulässig (verbotene Praktik)", st.error),
@@ -62,7 +61,7 @@ EXAMPLES = {
     "Bewerber-Vorauswahl": "Hochrisiko über Annex III",
     "Kundenservice-Chatbot": "nur Transparenzpflicht",
 }
-_EXAMPLE_TO_USE_CASE = dict(zip(EXAMPLES, use_case_titles))
+_EXAMPLE_TO_USE_CASE = dict(zip(EXAMPLES, use_case_titles, strict=True))
 
 picked = example_picker(
     "Beispiel wählen, ganz ohne Eingabe:", EXAMPLES, key="usecase"

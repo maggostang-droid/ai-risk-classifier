@@ -5,8 +5,8 @@ deckt verschiedene Fehlerarten ab, und erst über `by_article()` lässt sich
 das Ergebnis den AI-Act-Pflichten zuordnen.
 """
 
+from collections.abc import Callable, Iterable
 from dataclasses import dataclass
-from typing import Callable, Iterable
 
 from ai_act_toolkit.metamorphic.core import (
     MetamorphicRelation,

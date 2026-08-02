@@ -12,8 +12,8 @@ gibt es `expected_survivor` — bekannte Blindstellen werden deklariert und
 in den Tests festgenagelt, damit sie nicht stillschweigend verschwinden.
 """
 
+from collections.abc import Callable, Iterable
 from dataclasses import dataclass, field
-from typing import Callable, Iterable
 
 from ai_act_toolkit.metamorphic.core import MetamorphicRelation, run_relation
 

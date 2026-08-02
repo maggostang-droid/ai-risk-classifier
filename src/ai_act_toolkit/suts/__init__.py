@@ -6,8 +6,8 @@ sich jetzt daraus, ob überhaupt eine SUT hinterlegt ist. `use_cases.py`
 kennt die SUTs dadurch nicht mehr und bleibt reine Falldaten.
 """
 
+from collections.abc import Callable
 from dataclasses import dataclass
-from typing import Callable
 
 from ai_act_toolkit.metamorphic.core import MetamorphicRelation
 from ai_act_toolkit.metamorphic.mutation import Mutant
