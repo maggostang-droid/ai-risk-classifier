@@ -102,9 +102,9 @@ selbst gesetzt).
 
 Noch offen:
 
-- ⬜ Demo-GIF vom Namenstausch aufnehmen und `docs/demo.png` im README
-  ersetzen — braucht Marco selbst, eine Agenten-Session kann es nicht
-  erzeugen.
+- ✅ Demo-GIF vom Namenstausch: `docs/demo.gif`, erzeugt mit
+  `scripts/capture_demo.py` (Playwright gegen die lokal laufende App,
+  Montage per Pillow). Neu aufnehmen, wenn sich die UI ändert.
 - ⬜ Nach dem Merge prüfen, ob die Streamlit-App den neuen Stand zieht.
 - ⬜ `docs/architecture.svg` zeigt noch die alte Struktur ohne den
   Pflichten-Schritt.

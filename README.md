@@ -15,7 +15,7 @@ live aus. Die Einstufung selbst trifft ein deterministischer Regelbaum, nicht da
 > fällt Art. 10 zurück auf „offen".
 > *Streamlit Free Tier: der erste Aufruf kann ein paar Sekunden zum Aufwachen brauchen.*
 
-![AI Risk Classifier: Beispiel-Auswahl, editierbarer Fragebogen und die daraus folgende Hochrisiko-Einstufung mit Rechtsgrundlage](docs/demo.png)
+![Im korrekten System bekommen Maximilian und Kevin denselben Score von 85, die Namensinvarianz-Relation ist bestanden und Art. 10 in der Konformitätscheckliste abgehakt. Nach Injektion des Namensmerkmal-Fehlers fällt der Score von 91 auf 79, die Relation schlägt fehl und Art. 10 fällt zurück auf offen.](docs/demo.gif)
 
 <details>
 <summary><b>🇬🇧 English summary</b></summary>
