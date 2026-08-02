@@ -1,88 +1,84 @@
 {
-  "title": "app://ai-act-validation-toolkit · architecture",
-  "alt": "Fragebogen geht in den deterministischen Regelbaum, daraus folgen Risikoklasse, optionale LLM-Begruendung, metamorpher Test und Governance-Artefakt",
+  "title": "app://ai-act-evidence-toolkit · architecture",
+  "alt": "Use Case und Fragebogen gehen in den deterministischen Regelbaum, daraus folgt die Risikoklasse. Aus der Klasse leitet obligations.py die Artikelpflichten ab; fuer die technisch belegbaren laeuft die Relations-Suite mit Mutanten und Kill-Matrix. Pflichten und Evidenz laufen im Governance-Artefakt zusammen, das nur abhakt was belegt wurde. Das LLM haengt als Seitenzweig an der Klasse und formuliert nur Prosa.",
   "accent": "#fbbf24",
   "width": 940,
-  "height": 286,
+  "height": 348,
   "nodes": [
+    {
+      "id": "rat",
+      "x": 460,
+      "y": 54,
+      "w": 190,
+      "h": 48,
+      "label": "rationale.py",
+      "sub": "LLM, nur Prosa"
+    },
     {
       "id": "uc",
       "x": 30,
-      "y": 116,
-      "w": 190,
-      "h": 58,
+      "y": 140,
+      "w": 170,
+      "h": 56,
       "label": "Use Case",
       "sub": "+ Fragebogen"
     },
     {
       "id": "re",
-      "x": 262,
-      "y": 116,
+      "x": 240,
+      "y": 140,
       "w": 200,
-      "h": 58,
+      "h": 56,
       "label": "risk_engine.py",
       "sub": "Regelbaum, kein LLM",
       "emphasis": true
     },
     {
-      "id": "amp",
-      "x": 504,
-      "y": 116,
+      "id": "cls",
+      "x": 480,
+      "y": 140,
       "w": 160,
-      "h": 58,
+      "h": 56,
       "label": "Risikoklasse",
       "sub": "Ampel + Regel"
     },
     {
-      "id": "rat",
-      "x": 726,
-      "y": 36,
-      "w": 180,
-      "h": 54,
-      "label": "rationale.py",
-      "sub": "LLM formuliert nur"
+      "id": "obl",
+      "x": 680,
+      "y": 140,
+      "w": 210,
+      "h": 56,
+      "label": "obligations.py",
+      "sub": "Pflichten je Artikel",
+      "emphasis": true
     },
     {
-      "id": "met",
-      "x": 726,
-      "y": 118,
-      "w": 180,
-      "h": 54,
-      "label": "metamorphic.py",
-      "sub": "Test laeuft echt"
+      "id": "sut",
+      "x": 680,
+      "y": 252,
+      "w": 210,
+      "h": 56,
+      "label": "suts/ + metamorphic/",
+      "sub": "Suite, Mutanten, Matrix",
+      "emphasis": true
     },
     {
       "id": "gov",
-      "x": 726,
-      "y": 200,
-      "w": 180,
-      "h": 54,
+      "x": 390,
+      "y": 252,
+      "w": 220,
+      "h": 56,
       "label": "governance.py",
-      "sub": "Artefakt als Markdown"
+      "sub": "hakt nur Belegtes ab"
     }
   ],
   "edges": [
-    {
-      "from": "uc",
-      "to": "re"
-    },
-    {
-      "from": "re",
-      "to": "amp"
-    },
-    {
-      "from": "amp",
-      "to": "rat",
-      "dashed": true
-    },
-    {
-      "from": "amp",
-      "to": "met",
-      "dashed": true
-    },
-    {
-      "from": "amp",
-      "to": "gov"
-    }
+    { "from": "uc", "to": "re" },
+    { "from": "re", "to": "cls" },
+    { "from": "cls", "to": "rat", "dashed": true },
+    { "from": "cls", "to": "obl" },
+    { "from": "obl", "to": "sut", "label": "belegbar?" },
+    { "from": "sut", "to": "gov", "label": "Evidenz" },
+    { "from": "obl", "to": "gov", "label": "Pflichten" }
   ]
 }

@@ -100,11 +100,20 @@ Vorher (2026-07-28): Erstbau nach
 https://ai-act-validation-toolkit.streamlit.app/ (Marco hat die Secrets
 selbst gesetzt).
 
-Noch offen:
+## Doku-Artefakte neu erzeugen
 
-- ✅ Demo-GIF vom Namenstausch: `docs/demo.gif`, erzeugt mit
-  `scripts/capture_demo.py` (Playwright gegen die lokal laufende App,
-  Montage per Pillow). Neu aufnehmen, wenn sich die UI ändert.
-- ⬜ Nach dem Merge prüfen, ob die Streamlit-App den neuen Stand zieht.
-- ⬜ `docs/architecture.svg` zeigt noch die alte Struktur ohne den
-  Pflichten-Schritt.
+- `docs/demo.gif` — Beweismoment als zwei-Frame-Animation:
+  ```bash
+  .venv/Scripts/python.exe -m streamlit run app.py --server.port 8502 --server.headless true &
+  DEMO_CHROME=<pfad-zu-chrome-headless-shell.exe> python scripts/capture_demo.py docs/
+  ```
+  Playwright liegt global, nicht im venv. Liegt der erwartete Chromium-Build
+  nicht vor, zeigt `DEMO_CHROME` auf einen vorhandenen unter
+  `%LOCALAPPDATA%\ms-playwright\`.
+- `docs/architecture.svg` — aus `docs/architecture.json`:
+  ```bash
+  node ../marco-os/tools/gen-diagram.mjs docs/architecture.json docs/architecture.svg
+  ```
+  Positionen sind bewusst von Hand gesetzt. Beim Ändern des Diagramms auch
+  den Alt-Text im README nachziehen — er ist die Barrierefreiheits-Fassung
+  desselben Inhalts.

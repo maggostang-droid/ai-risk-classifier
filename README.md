@@ -124,11 +124,17 @@ Die Zuordnung jedes Fragebogen-Kriteriums zur jeweiligen Rechtsgrundlage steht i
 
 ## Architektur
 
-![Fragebogen geht in den deterministischen Regelbaum, daraus folgen Risikoklasse, optionale LLM-Begründung, metamorpher Test und Governance-Artefakt](docs/architecture.svg)
+![Use Case und Fragebogen gehen in den deterministischen Regelbaum, daraus folgt die Risikoklasse. Aus der Klasse leitet obligations.py die Artikelpflichten ab; für die technisch belegbaren läuft die Relations-Suite mit Mutanten und Kill-Matrix. Pflichten und Evidenz laufen im Governance-Artefakt zusammen, das nur abhakt was belegt wurde. Das LLM hängt als Seitenzweig an der Klasse und formuliert nur Prosa.](docs/architecture.svg)
 
-Bewusst schlank gehalten: kein Frontend-Framework, keine Datenbank, keine Vektor-DB. Die
-Methodik aus Regelbaum und metamorphem Test soll im Vordergrund stehen, nicht die
-Infrastruktur.
+Der entscheidende Knoten ist `obligations.py`. Ohne ihn stünden Einstufung und
+metamorpher Test nur nebeneinander — er ist es, der aus einer Risikoklasse eine Liste
+konkreter Artikelpflichten macht, von denen jede weiß, ob sie überhaupt technisch
+belegbar ist. Erst dadurch hat die Relations-Suite ein Ziel und das Artefakt etwas zum
+Abhaken.
+
+Bewusst schlank gehalten: kein Frontend-Framework, keine Datenbank, keine Vektor-DB,
+kein neues Runtime-Dependency. Die Methodik aus Regelbaum, Relationen und
+Mutationsanalyse soll im Vordergrund stehen, nicht die Infrastruktur.
 
 ## Was belegt werden kann, und was nicht
 

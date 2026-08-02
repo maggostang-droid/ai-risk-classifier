@@ -1,12 +1,12 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 940 286"
-     width="940" height="286" role="img" aria-label="Fragebogen geht in den deterministischen Regelbaum, daraus folgen Risikoklasse, optionale LLM-Begruendung, metamorpher Test und Governance-Artefakt">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 940 348"
+     width="940" height="348" role="img" aria-label="Use Case und Fragebogen gehen in den deterministischen Regelbaum, daraus folgt die Risikoklasse. Aus der Klasse leitet obligations.py die Artikelpflichten ab; fuer die technisch belegbaren laeuft die Relations-Suite mit Mutanten und Kill-Matrix. Pflichten und Evidenz laufen im Governance-Artefakt zusammen, das nur abhakt was belegt wurde. Das LLM haengt als Seitenzweig an der Klasse und formuliert nur Prosa.">
   <defs>
     <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7"
             orient="auto-start-reverse">
       <path d="M 0 0 L 10 5 L 0 10 z" fill="#a78bfa"/>
     </marker>
   </defs>
-  <rect x="0.5" y="0.5" width="939" height="285" rx="14"
+  <rect x="0.5" y="0.5" width="939" height="347" rx="14"
         fill="#0a0716" stroke="#fbbf24" stroke-width="1" opacity="1"/>
   <rect x="0.5" y="0.5" width="939" height="36" rx="14" fill="#140f24"/>
   <rect x="0.5" y="22" width="939" height="14" fill="#140f24"/>
@@ -15,76 +15,100 @@
   <circle cx="38" cy="18" r="5" fill="#febc2e"/>
   <circle cx="56" cy="18" r="5" fill="#28c840"/>
   <text x="76" y="23" fill="#c9c5e8" font-family="JetBrains Mono, SFMono-Regular, Consolas, monospace" font-size="12"
-        opacity="0.9">app://ai-act-validation-toolkit · architecture</text>
+        opacity="0.9">app://ai-act-evidence-toolkit · architecture</text>
 
-  <path d="M 220 145 L 262 145" fill="none" stroke="#a78bfa" stroke-width="1.8"
+  <path d="M 200 168 L 240 168" fill="none" stroke="#a78bfa" stroke-width="1.8"
         marker-end="url(#arrow)" opacity="0.9"/>
   
-  <path d="M 462 145 L 504 145" fill="none" stroke="#a78bfa" stroke-width="1.8"
+  <path d="M 440 168 L 480 168" fill="none" stroke="#a78bfa" stroke-width="1.8"
         marker-end="url(#arrow)" opacity="0.9"/>
   
-  <path d="M 664 116.72413793103448 L 739.609756097561 90" fill="none" stroke="#a78bfa" stroke-width="1.8" stroke-dasharray="6 5"
+  <path d="M 558.4444444444445 140 L 556.3333333333334 102" fill="none" stroke="#a78bfa" stroke-width="1.8" stroke-dasharray="6 5"
         marker-end="url(#arrow)" opacity="0.9"/>
   
-  <path d="M 664 145 L 726 145" fill="none" stroke="#a78bfa" stroke-width="1.8" stroke-dasharray="6 5"
+  <path d="M 640 168 L 680 168" fill="none" stroke="#a78bfa" stroke-width="1.8"
         marker-end="url(#arrow)" opacity="0.9"/>
   
-  <path d="M 664 173.27586206896552 L 739.609756097561 200" fill="none" stroke="#a78bfa" stroke-width="1.8"
+  <path d="M 785 196 L 785 252" fill="none" stroke="#a78bfa" stroke-width="1.8"
         marker-end="url(#arrow)" opacity="0.9"/>
-  
+  <rect x="747.85" y="203" width="74.30000000000001" height="17"
+             rx="5" fill="#0a0716" opacity="0.92"/>
+         <text x="785" y="215" fill="#c9c5e8" font-family="JetBrains Mono, SFMono-Regular, Consolas, monospace"
+          font-size="11" text-anchor="middle">belegbar?</text>
+  <path d="M 680 280 L 610 280" fill="none" stroke="#a78bfa" stroke-width="1.8"
+        marker-end="url(#arrow)" opacity="0.9"/>
+  <rect x="614.55" y="259" width="60.9" height="17"
+             rx="5" fill="#0a0716" opacity="0.92"/>
+         <text x="645" y="271" fill="#c9c5e8" font-family="JetBrains Mono, SFMono-Regular, Consolas, monospace"
+          font-size="11" text-anchor="middle">Evidenz</text>
+  <path d="M 713.75 196 L 571.25 252" fill="none" stroke="#a78bfa" stroke-width="1.8"
+        marker-end="url(#arrow)" opacity="0.9"/>
+  <rect x="605.35" y="203" width="74.30000000000001" height="17"
+             rx="5" fill="#0a0716" opacity="0.92"/>
+         <text x="642.5" y="215" fill="#c9c5e8" font-family="JetBrains Mono, SFMono-Regular, Consolas, monospace"
+          font-size="11" text-anchor="middle">Pflichten</text>
 
   <g>
-    <rect x="30" y="116" width="190" height="58" rx="10"
+    <rect x="460" y="54" width="190" height="48" rx="10"
           fill="#140f24" stroke="#06040d" stroke-width="3"/>
-    <rect x="30" y="116" width="190" height="58" rx="10"
+    <rect x="460" y="54" width="190" height="48" rx="10"
           fill="none" stroke="#fbbf24" stroke-width="1.5" opacity="0.85"/>
-    <text x="125" y="142" fill="#e7e4f5" font-family="JetBrains Mono, SFMono-Regular, Consolas, monospace"
-          font-size="14" font-weight="600" text-anchor="middle">Use Case</text>
-    <text x="125" y="160" fill="#c9c5e8" font-family="JetBrains Mono, SFMono-Regular, Consolas, monospace" font-size="11" text-anchor="middle" opacity="0.85">+ Fragebogen</text>
-  </g>
-  <g>
-    <rect x="262" y="116" width="200" height="58" rx="10"
-          fill="#fbbf24" stroke="#06040d" stroke-width="3"/>
-    <rect x="262" y="116" width="200" height="58" rx="10"
-          fill="none" stroke="#06040d" stroke-width="1.5" opacity="1"/>
-    <text x="362" y="142" fill="#06040d" font-family="JetBrains Mono, SFMono-Regular, Consolas, monospace"
-          font-size="14" font-weight="600" text-anchor="middle">risk_engine.py</text>
-    <text x="362" y="160" fill="#06040d" font-family="JetBrains Mono, SFMono-Regular, Consolas, monospace" font-size="11" text-anchor="middle" opacity="0.85">Regelbaum, kein LLM</text>
-  </g>
-  <g>
-    <rect x="504" y="116" width="160" height="58" rx="10"
-          fill="#140f24" stroke="#06040d" stroke-width="3"/>
-    <rect x="504" y="116" width="160" height="58" rx="10"
-          fill="none" stroke="#fbbf24" stroke-width="1.5" opacity="0.85"/>
-    <text x="584" y="142" fill="#e7e4f5" font-family="JetBrains Mono, SFMono-Regular, Consolas, monospace"
-          font-size="14" font-weight="600" text-anchor="middle">Risikoklasse</text>
-    <text x="584" y="160" fill="#c9c5e8" font-family="JetBrains Mono, SFMono-Regular, Consolas, monospace" font-size="11" text-anchor="middle" opacity="0.85">Ampel + Regel</text>
-  </g>
-  <g>
-    <rect x="726" y="36" width="180" height="54" rx="10"
-          fill="#140f24" stroke="#06040d" stroke-width="3"/>
-    <rect x="726" y="36" width="180" height="54" rx="10"
-          fill="none" stroke="#fbbf24" stroke-width="1.5" opacity="0.85"/>
-    <text x="816" y="60" fill="#e7e4f5" font-family="JetBrains Mono, SFMono-Regular, Consolas, monospace"
+    <text x="555" y="75" fill="#e7e4f5" font-family="JetBrains Mono, SFMono-Regular, Consolas, monospace"
           font-size="14" font-weight="600" text-anchor="middle">rationale.py</text>
-    <text x="816" y="78" fill="#c9c5e8" font-family="JetBrains Mono, SFMono-Regular, Consolas, monospace" font-size="11" text-anchor="middle" opacity="0.85">LLM formuliert nur</text>
+    <text x="555" y="93" fill="#c9c5e8" font-family="JetBrains Mono, SFMono-Regular, Consolas, monospace" font-size="11" text-anchor="middle" opacity="0.85">LLM, nur Prosa</text>
   </g>
   <g>
-    <rect x="726" y="118" width="180" height="54" rx="10"
+    <rect x="30" y="140" width="170" height="56" rx="10"
           fill="#140f24" stroke="#06040d" stroke-width="3"/>
-    <rect x="726" y="118" width="180" height="54" rx="10"
+    <rect x="30" y="140" width="170" height="56" rx="10"
           fill="none" stroke="#fbbf24" stroke-width="1.5" opacity="0.85"/>
-    <text x="816" y="142" fill="#e7e4f5" font-family="JetBrains Mono, SFMono-Regular, Consolas, monospace"
-          font-size="14" font-weight="600" text-anchor="middle">metamorphic.py</text>
-    <text x="816" y="160" fill="#c9c5e8" font-family="JetBrains Mono, SFMono-Regular, Consolas, monospace" font-size="11" text-anchor="middle" opacity="0.85">Test laeuft echt</text>
+    <text x="115" y="165" fill="#e7e4f5" font-family="JetBrains Mono, SFMono-Regular, Consolas, monospace"
+          font-size="14" font-weight="600" text-anchor="middle">Use Case</text>
+    <text x="115" y="183" fill="#c9c5e8" font-family="JetBrains Mono, SFMono-Regular, Consolas, monospace" font-size="11" text-anchor="middle" opacity="0.85">+ Fragebogen</text>
   </g>
   <g>
-    <rect x="726" y="200" width="180" height="54" rx="10"
+    <rect x="240" y="140" width="200" height="56" rx="10"
+          fill="#fbbf24" stroke="#06040d" stroke-width="3"/>
+    <rect x="240" y="140" width="200" height="56" rx="10"
+          fill="none" stroke="#06040d" stroke-width="1.5" opacity="1"/>
+    <text x="340" y="165" fill="#06040d" font-family="JetBrains Mono, SFMono-Regular, Consolas, monospace"
+          font-size="14" font-weight="600" text-anchor="middle">risk_engine.py</text>
+    <text x="340" y="183" fill="#06040d" font-family="JetBrains Mono, SFMono-Regular, Consolas, monospace" font-size="11" text-anchor="middle" opacity="0.85">Regelbaum, kein LLM</text>
+  </g>
+  <g>
+    <rect x="480" y="140" width="160" height="56" rx="10"
           fill="#140f24" stroke="#06040d" stroke-width="3"/>
-    <rect x="726" y="200" width="180" height="54" rx="10"
+    <rect x="480" y="140" width="160" height="56" rx="10"
           fill="none" stroke="#fbbf24" stroke-width="1.5" opacity="0.85"/>
-    <text x="816" y="224" fill="#e7e4f5" font-family="JetBrains Mono, SFMono-Regular, Consolas, monospace"
+    <text x="560" y="165" fill="#e7e4f5" font-family="JetBrains Mono, SFMono-Regular, Consolas, monospace"
+          font-size="14" font-weight="600" text-anchor="middle">Risikoklasse</text>
+    <text x="560" y="183" fill="#c9c5e8" font-family="JetBrains Mono, SFMono-Regular, Consolas, monospace" font-size="11" text-anchor="middle" opacity="0.85">Ampel + Regel</text>
+  </g>
+  <g>
+    <rect x="680" y="140" width="210" height="56" rx="10"
+          fill="#fbbf24" stroke="#06040d" stroke-width="3"/>
+    <rect x="680" y="140" width="210" height="56" rx="10"
+          fill="none" stroke="#06040d" stroke-width="1.5" opacity="1"/>
+    <text x="785" y="165" fill="#06040d" font-family="JetBrains Mono, SFMono-Regular, Consolas, monospace"
+          font-size="14" font-weight="600" text-anchor="middle">obligations.py</text>
+    <text x="785" y="183" fill="#06040d" font-family="JetBrains Mono, SFMono-Regular, Consolas, monospace" font-size="11" text-anchor="middle" opacity="0.85">Pflichten je Artikel</text>
+  </g>
+  <g>
+    <rect x="680" y="252" width="210" height="56" rx="10"
+          fill="#fbbf24" stroke="#06040d" stroke-width="3"/>
+    <rect x="680" y="252" width="210" height="56" rx="10"
+          fill="none" stroke="#06040d" stroke-width="1.5" opacity="1"/>
+    <text x="785" y="277" fill="#06040d" font-family="JetBrains Mono, SFMono-Regular, Consolas, monospace"
+          font-size="14" font-weight="600" text-anchor="middle">suts/ + metamorphic/</text>
+    <text x="785" y="295" fill="#06040d" font-family="JetBrains Mono, SFMono-Regular, Consolas, monospace" font-size="11" text-anchor="middle" opacity="0.85">Suite, Mutanten, Matrix</text>
+  </g>
+  <g>
+    <rect x="390" y="252" width="220" height="56" rx="10"
+          fill="#140f24" stroke="#06040d" stroke-width="3"/>
+    <rect x="390" y="252" width="220" height="56" rx="10"
+          fill="none" stroke="#fbbf24" stroke-width="1.5" opacity="0.85"/>
+    <text x="500" y="277" fill="#e7e4f5" font-family="JetBrains Mono, SFMono-Regular, Consolas, monospace"
           font-size="14" font-weight="600" text-anchor="middle">governance.py</text>
-    <text x="816" y="242" fill="#c9c5e8" font-family="JetBrains Mono, SFMono-Regular, Consolas, monospace" font-size="11" text-anchor="middle" opacity="0.85">Artefakt als Markdown</text>
+    <text x="500" y="295" fill="#c9c5e8" font-family="JetBrains Mono, SFMono-Regular, Consolas, monospace" font-size="11" text-anchor="middle" opacity="0.85">hakt nur Belegtes ab</text>
   </g>
 </svg>
