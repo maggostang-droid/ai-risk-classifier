@@ -2,6 +2,14 @@
 
 import streamlit as st
 
+import sys
+from pathlib import Path
+
+# Das Verzeichnis dieser Datei auf den Importpfad legen, damit portfolio_ui
+# sowohl beim normalen Start (Streamlit legt es selbst dorthin) als auch im
+# Test-Harness (AppTest.from_file laeuft vom Repo-Wurzelverzeichnis) gefunden wird.
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+
 from portfolio_ui import (
     example_picker,
     page_header,
