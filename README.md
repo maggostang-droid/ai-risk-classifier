@@ -15,8 +15,7 @@ deterministischer Regelbaum, nicht das LLM.**
 > Risiko fällt. Danach den metamorphen Test starten.
 > *Streamlit Free Tier: der erste Aufruf kann ein paar Sekunden zum Aufwachen brauchen.*
 
-<!-- TODO(Marco): Screenshot einfuegen, dann diese Zeile durch das Bild ersetzen:
-     ![AI Risk Classifier: Ampel-Klassifizierung mit editierbarem Fragebogen](docs/demo.png) -->
+![AI Risk Classifier: Beispiel-Auswahl, editierbarer Fragebogen und die daraus folgende Hochrisiko-Einstufung mit Rechtsgrundlage](docs/demo.png)
 
 <details>
 <summary><b>🇬🇧 English summary</b></summary>
