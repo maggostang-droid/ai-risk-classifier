@@ -1586,7 +1586,12 @@ RECRUITING_MUTANTS = (
 Run: `.venv/Scripts/python.exe -m pytest tests/test_sut_recruiting.py -v`
 Erwartung: 9 passed
 
-Kontrollrechnung für den Beweismoment: Basis `10 + 15 + 40 + 15 = 80`, mit `+6` für „Maximilian" → `86`, mit `−6` für „Kevin" → `74`. Differenz **12 Punkte**.
+Kontrollrechnung für den Beweismoment: Basis `10 + 15 + 40 + 20 = 85`, mit `+6` für „Maximilian" → `91`, mit `−6` für „Kevin" → `79`. Differenz **12 Punkte**.
+
+`education_level=4` im Baseline-Profil ist bewusst gewählt: bei `3` rechnet die
+Vorzeichenfehler-Variante `10+15−40+15 = 0` und wird von der unteren Clip-Grenze
+gehalten, Quell- und Folgefall wären beide `0` und die Skill-Monotonie sähe den
+Defekt nicht. Ein Baselinepunkt im Sättigungsbereich macht eine Relation blind.
 
 - [ ] **Step 5: Commit**
 
@@ -2354,7 +2359,7 @@ Erwartung: alle grün, insgesamt 74 passed
 .venv/Scripts/python.exe -m streamlit run app.py
 ```
 
-Prüfen: Use Case „KI-gestützte Bewerber-Vorauswahl" wählen, in Schritt 3 den Fehler „Vom Vornamen abgeleitetes Merkmal" injizieren. Erwartung: Namensinvarianz kippt auf ❌, Quellfall 86.00, Folgefall 74.00. In Schritt 4 steht Art. 10 dann wieder auf `- [ ]`.
+Prüfen: Use Case „KI-gestützte Bewerber-Vorauswahl" wählen, in Schritt 3 den Fehler „Vom Vornamen abgeleitetes Merkmal" injizieren. Erwartung: Namensinvarianz kippt auf ❌, Quellfall 91.00, Folgefall 79.00. In Schritt 4 steht Art. 10 dann wieder auf `- [ ]`.
 
 - [ ] **Step 9: Commit**
 
@@ -2490,7 +2495,7 @@ Zu ändern:
 
 Wähle in der Demo die Bewerber-Vorauswahl und injiziere in Schritt 3 den Fehler
 „Vom Vornamen abgeleitetes Merkmal". Im Bewerbungsprofil ändert sich daraufhin
-nichts außer dem Vornamen — der Score fällt trotzdem von 86 auf 74.
+nichts außer dem Vornamen — der Score fällt trotzdem von 91 auf 79.
 
 Genau das ist metamorphes Testen: geprüft wird nicht eine einzelne Ausgabe gegen
 ein bekanntes Sollergebnis (das ist bei KI-Systemen meist unbekannt, das
