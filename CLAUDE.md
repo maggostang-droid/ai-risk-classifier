@@ -111,12 +111,12 @@ folgt dem nicht zwingend).
 
 **Braucht Marcos Login, keine Agenten-Session kann das:** in der Streamlit
 Cloud die App neu starten („Reboot app") und, falls das nicht reicht, die
-Repo-Verknüpfung auf `maggostang-droid/ai-risk-classifier` korrigieren. Die
+Repo-Verknüpfung auf `marco-stang/ai-risk-classifier` korrigieren. Die
 Sub-Domain `ai-act-validation-toolkit.streamlit.app` kann dabei bleiben, sie
 ist in README, `docs/index.html` und `../marco-os/data/projects.js` verlinkt.
 
 Die GitHub-Pages-Projektseite hat den Slug-Wechsel dagegen mitgemacht und läuft
-korrekt unter https://maggostang-droid.github.io/ai-risk-classifier/.
+korrekt unter https://marco-stang.github.io/ai-risk-classifier/.
 
 ## Doku-Artefakte neu erzeugen
 

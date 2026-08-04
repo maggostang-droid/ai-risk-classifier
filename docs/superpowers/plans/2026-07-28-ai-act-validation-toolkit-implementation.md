@@ -1223,7 +1223,7 @@ manuell im Browser.
 
 - [ ] **Step 1: Mit Marco bestätigen: Repo-Name `ai-act-validation-toolkit`, public — passt das?**
 
-- [ ] **Step 2: Repo auf github.com als `maggostang-droid` anlegen**
+- [ ] **Step 2: Repo auf github.com als `marco-stang` anlegen**
 
 "New repository" → Name `ai-act-validation-toolkit`, **public**, ohne
 README/.gitignore-Vorbelegung (kommt aus dem lokalen Repo).
@@ -1231,7 +1231,7 @@ README/.gitignore-Vorbelegung (kommt aus dem lokalen Repo).
 - [ ] **Step 3: Lokal verbinden und pushen**
 
 ```bash
-git remote add origin https://github.com/maggostang-droid/ai-act-validation-toolkit.git
+git remote add origin https://github.com/marco-stang/ai-act-validation-toolkit.git
 git push -u origin master
 ```
 
@@ -1250,7 +1250,7 @@ Erwartet: `origin` zeigt auf das neue Repo, letzter Commit ist auf GitHub sichtb
 
 - [ ] **Step 1: Auf share.streamlit.io mit dem GitHub-Account einloggen**
 
-- [ ] **Step 2: Neue App aus `maggostang-droid/ai-act-validation-toolkit`, Branch `master`, Datei `app.py` deployen**
+- [ ] **Step 2: Neue App aus `marco-stang/ai-act-validation-toolkit`, Branch `master`, Datei `app.py` deployen**
 
 - [ ] **Step 3: Secrets setzen (Streamlit-Cloud-UI, "Secrets")**
 

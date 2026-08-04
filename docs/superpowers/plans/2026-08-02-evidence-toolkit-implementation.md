@@ -2487,7 +2487,7 @@ page_header(
 Zu ändern:
 - H1 auf `# AI Act Evidence Toolkit`, Claim entlang der Kette Pflicht → Nachweis.
 - Badge `Tests-17_passing` durch den CI-Badge ersetzen:
-  `![CI](https://github.com/maggostang-droid/ai-risk-classifier/actions/workflows/ci.yml/badge.svg)`
+  `![CI](https://github.com/marco-stang/ai-risk-classifier/actions/workflows/ci.yml/badge.svg)`
 - Neuer Abschnitt „Der Beweismoment" vor dem Architektur-Abschnitt:
 
 ```markdown

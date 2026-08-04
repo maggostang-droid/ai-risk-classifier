@@ -6,7 +6,7 @@ live aus. Die Einstufung selbst trifft ein deterministischer Regelbaum, nicht da
 
 ![Python](https://img.shields.io/badge/Python-3.10+-fbbf24?style=flat-square&labelColor=0a0716)
 ![EU AI Act](https://img.shields.io/badge/EU_AI_Act-Annex_III-fbbf24?style=flat-square&labelColor=0a0716)
-[![CI](https://github.com/maggostang-droid/ai-risk-classifier/actions/workflows/ci.yml/badge.svg)](https://github.com/maggostang-droid/ai-risk-classifier/actions/workflows/ci.yml)
+[![CI](https://github.com/marco-stang/ai-risk-classifier/actions/workflows/ci.yml/badge.svg)](https://github.com/marco-stang/ai-risk-classifier/actions/workflows/ci.yml)
 [![Live-Demo](https://img.shields.io/badge/▶_Live--Demo-Streamlit-0a0716?style=flat-square&labelColor=fbbf24)](https://ai-act-validation-toolkit.streamlit.app/)
 
 > **▶ [Demo ausprobieren](https://ai-act-validation-toolkit.streamlit.app/)**
@@ -193,12 +193,12 @@ cp .env.example .env                          # LLM_PROVIDER, LLM_MODEL, API-Key
 marco@portfolio:~$ open marco-os --project ai-act-validation-toolkit
 ```
 
-**[▸ Dieses Projekt in MARCO.OS öffnen](https://maggostang-droid.github.io/marco-os/#ai-act-validation-toolkit)**,
+**[▸ Dieses Projekt in MARCO.OS öffnen](https://marco-stang.github.io/#ai-act-validation-toolkit)**,
 dem interaktiven Portfolio von Marco Stang.
 
 **Schwesterprojekte:**
-[SQL Copilot](https://github.com/maggostang-droid/sql-copilot) (LangGraph-Agent mit Guardrails) ·
-[Review Risk Predictor](https://github.com/maggostang-droid/review-risk-predictor) (erklärbares ML, React/FastAPI) ·
-[Ask-Marco Assistant](https://github.com/maggostang-droid/ask-marco-assistant) (Chat über alle Projekte)
+[SQL Copilot](https://github.com/marco-stang/sql-copilot) (LangGraph-Agent mit Guardrails) ·
+[Review Risk Predictor](https://github.com/marco-stang/review-risk-predictor) (erklärbares ML, React/FastAPI) ·
+[Ask-Marco Assistant](https://github.com/marco-stang/ask-marco-assistant) (Chat über alle Projekte)
 
 <sub>Marco Stang · Dr.-Ing. · [LinkedIn](https://www.linkedin.com/in/marco-stang) · stang.marco@t-online.de · MIT-Lizenz</sub>
